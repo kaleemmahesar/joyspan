@@ -1,0 +1,231 @@
+.login-content {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+}
+
+.login-paper {
+  width: 100%;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  background-color: white;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.login-title {
+  color: var(--black-color);
+  font-weight: 600;
+  text-align: center;
+}
+
+.login-subtitle {
+  color: #666;
+  text-align: center;
+  max-width: 400px;
+}
+
+.google-button {
+  background-color: #fff !important;
+  color: #757575 !important;
+  border: 1px solid #ddd !important;
+  padding: 0.75rem 2rem !important;
+  font-size: 1rem !important;
+  text-transform: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+.google-button:hover {
+  background-color: #f8f9fa !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.google-button .MuiSvgIcon-root {
+  margin-right: 0.5rem;
+  color: #4285f4;
+}
+
+.login-footer {
+  color: #666;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .login-content {
+    padding: 1rem;
+  }
+
+  .login-paper {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-title {
+    font-size: 1.75rem;
+  }
+}
+
+.login-form {
+  width: 100%;
+}
+
+.login-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 16px; /* updated */
+  font-weight: 700;
+  color: rgba(7, 24, 70, 1); /* updated */
+}
+
+.login-form .MuiTextField-root {
+  width: 100%;
+}
+
+.login-form .MuiInputBase-root {
+  background-color: #fff;
+  height: 56px; /* updated */
+  font-size: 16px; /* ensure input text is also 16px */
+  box-sizing: border-box;
+  border-radius: 10px !important;
+
+}
+.login-form .MuiInputBase-root input {
+  border-radius: 10px;
+}
+.login-form .MuiOutlinedInput-root {
+  border-radius: 4px;
+  height: 56px; /* updated */
+  font-size: 16px; /* ensure input text is also 16px */
+  box-sizing: border-box;
+}
+
+
+.login-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+}
+
+.login-form .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+  border-width: 2px;
+} 
+
+/* Placeholder color and font-size */
+.login-form .MuiOutlinedInput-input::placeholder,
+.login-form .MuiInputBase-input::placeholder {
+  color: rgba(7, 24, 70, 0.5); /* updated */
+  font-size: 16px; /* updated */
+  opacity: 1; /* ensure color is applied */
+}
+
+.MuiContainer-root .MuiBox-root {
+  margin: 0 !important; 
+}
+.login-background {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F2F8F9 100%);
+  padding: 0;
+}
+.MuiContainer-root {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-form .forgot-password {
+  display: block;
+  text-align: left;
+  color: rgba(10, 165, 197, 1);
+  font-size: 16px;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+.MuiBox-root .login-paper {
+  padding: 0;
+  box-shadow: none;
+  background: transparent;
+  min-width: 470px;
+  max-width: 470px;
+}
+.MuiBox-root .login-paper.login-paper-signup {
+  min-width: 980px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 100px 0;
+}
+.login-form .login-button {
+  background: rgba(10, 165, 197, 1);
+  color: #fff;
+  height: 54px;
+  box-shadow: none !important;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 2rem;
+  text-transform: capitalize;
+  letter-spacing: 0;
+}
+.login-form .login-button:hover {
+  background: rgba(10, 165, 197, 0.8);
+}
+.login-form .signup-button {
+  background: transparent;
+  color: rgba(10, 165, 197, 1);
+  box-shadow: none !important;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 2rem;
+  letter-spacing: 0;
+  text-transform: capitalize;
+}
+.MuiBox-root h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(7, 24, 70, 1);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+.MuiBox-root h2 {
+  font-size: 38px;
+  font-weight: 700;
+  color: rgba(7, 24, 70, 1);
+  margin-bottom: 1rem;
+  text-transform: capitalize;
+  text-align: center;
+}
+.form-row{
+  display: flex;
+  gap: 35px;
+  margin-bottom: 25px;
+}
+.form-row .form-field {
+  flex: 1;
+}
+.form-buttons {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+}
+.form-buttons button {
+  width: 100%;
+  max-width: 350px;
+}
+.MuiMenu-list {
+  background-color: #fff;
+}

@@ -1,0 +1,246 @@
+.me-content {
+  position: relative;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 0 !important;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.MuiPaper-root {
+  background-color: transparent !important;
+}
+
+.content-wrapper {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+  min-width: 825px;
+}
+
+/* Step-specific styles */
+.me-content.step-1 {
+  background-color: #fff;
+}
+
+.me-content.step-2 {
+  background-color: #fff;
+}
+
+.me-content.step-3 {
+  background-color: #fff;
+}
+
+.me-content.step-4 {
+  background-color: #fff;
+}
+
+.me-content::before,
+.me-content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width:  600px;
+  height: 325px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+.me-content::before {
+  left: 0;
+  background-image: url('/bg-left1.png');
+  z-index: 1;
+}
+
+.me-content::after {
+  right: 0;
+  background-image: url('/bg-right.png');
+  width: 100%;
+  height: 710px;
+  background-size: 100% 100%;
+  bottom: -10px;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.me-form-control {
+  box-shadow: none !important;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  background-color: transparent;
+  margin-bottom: 2rem !important;
+  overflow: hidden;
+}
+
+.me-form-control .MuiFormControl-root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.me-radio-group {
+  width: 100%;
+  margin: 0;
+}
+
+.me-radio-group > div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  margin: 0;
+}
+
+.me-form-label {
+  margin: 0 !important;
+  height: 60px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.me-form-label:hover {
+  border-color: #0AA5C5;
+  background-color: rgba(10, 165, 197, 0.05);
+  box-shadow: 0 4px 8px rgba(10, 165, 197, 0.1);
+}
+
+.me-form-label .MuiFormControlLabel-root {
+  margin: 0 !important;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.me-form-label .MuiFormControlLabel-label {
+  font-size: 1rem;
+  line-height: 1.3;
+  color: var(--black-color);
+  word-break: break-word;
+  padding: 0;
+  margin: 0;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  flex: 1;
+}
+
+.me-radio {
+  padding: 0.5rem;
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+
+.me-radio.Mui-checked {
+  color: #0AA5C5 !important;
+}
+
+.me-error-text {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  color: #d32f2f;
+}
+.me-heading {
+  margin-bottom: 25px !important;
+}
+.MuiBox-root .me-heading {
+  margin-bottom: 25px;
+  color: var(--black-color);
+  font-weight: 600;
+  padding: 0 0;
+}
+
+.me-card {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background-color: white;
+  margin-top: 2rem;
+}
+
+.me-card-content {
+  padding: 2rem;
+}
+
+.me-button-contained {
+  background-color: #0AA5C5 !important;
+  color: white !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  padding: 8px 24px !important;
+}
+
+.me-button-outlined {
+  border-color: #0AA5C5 !important;
+  color: #0AA5C5 !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  padding: 8px 24px !important;
+}
+.me-content.step-3 hr {
+  border: none;
+  margin: 0;
+}
+.me-content.step-3 .me-card {
+  box-shadow: none;
+  background-color: transparent;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .me-content {
+    padding: 100px 0;
+  }
+
+  .me-content .container {
+    padding: 0 1rem;
+  }
+
+  .me-form-control {
+    padding: 1.5rem;
+  }
+
+  .me-radio-group > div {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .me-form-label .MuiFormControlLabel-root {
+    padding: 0 0.75rem;
+  }
+
+  .me-card-content {
+    padding: 1.5rem;
+  }
+
+  .me-heading {
+    padding: 0 0.5rem;
+  }
+} 

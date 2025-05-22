@@ -1,0 +1,172 @@
+.header {
+  width: 100%;
+  overflow-x: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+.top-header {
+  background-color: #0AA5C5;
+  padding: 8px 0;
+  color: white;
+  width: 100%;
+}
+
+.top-header .container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.top-header .welcome-text {
+  color: white;
+  margin-bottom: 0;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.top-header .join-us-btn {
+  height: 38px;
+  min-width: 194px;
+  background-color: var(--color-action);
+  border: none;
+  color: var(--white-color);
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+
+.top-header .join-us-btn:hover {
+  opacity: 0.8;
+}
+
+.main-header {
+  padding: 16px 0;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.main-header .container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.main-nav {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 40px;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 24px;
+}
+
+.nav-link {
+  color: #071846 !important;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0AA5C5 !important;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.header-buttons .btn {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 80px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.header-buttons .btn-outline {
+  background-color: transparent;
+  border: 1px solid #0AA5C5;
+  color: #0AA5C5;
+}
+
+.header-buttons .btn-outline:hover {
+  background-color: #0AA5C5;
+  color: white;
+}
+
+.header-buttons .btn-primary {
+  background-color: #0AA5C5;
+  border: 1px solid #0AA5C5;
+  color: white;
+}
+
+.header-buttons .btn-primary:hover {
+  background-color: #0994b0;
+  border-color: #0994b0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-name {
+  color: #071846;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+  .top-header .welcome-text {
+    font-size: 18px;
+  }
+  
+  .main-nav {
+    margin-left: 20px;
+  }
+  
+  .nav-list {
+    gap: 12px;
+  }
+  
+  .header-buttons {
+    gap: 8px;
+  }
+  
+  .header-buttons .btn {
+    padding: 0 12px;
+    font-size: 12px;
+    min-width: 70px;
+  }
+
+  .user-name {
+    font-size: 12px;
+  }
+} 

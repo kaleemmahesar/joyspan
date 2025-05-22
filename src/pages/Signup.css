@@ -1,0 +1,42 @@
+.signup-form {
+  width: 100%;
+}
+
+.signup-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.signup-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.signup-form .MuiTextField-root {
+  width: 100%;
+}
+
+.signup-form .MuiInputBase-root {
+  background-color: #fff;
+}
+
+.signup-form .MuiOutlinedInput-root {
+  border-radius: 4px;
+}
+
+.signup-form .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+}
+
+.signup-form .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1976d2;
+  border-width: 2px;
+}
+
+.signup-form .MuiFormHelperText-root {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+} 

@@ -1,0 +1,33 @@
+:root {
+  /* Colors */
+  --color-action: #EA6C1D;
+  --color-icon: #CFF6F9;
+  --color-text: #AE4141;
+  --dark-blue-color: #0AA5C5;
+  --white-color: #FFFFFF;
+  --black-color: #071846;
+
+  /* Backgrounds */
+  --bg-primary: #EEEEEE;
+  --bg-secondary: #CFD5E6;
+  --gradient-start: #F3F8F91A;
+  --gradient-end: #0AA5C51A;
+  --bg-blue-color: #0AA5C5;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
+
+  /* Spacing */
+  --container-width: 1256px;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+
+  /* Breakpoints */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+} 

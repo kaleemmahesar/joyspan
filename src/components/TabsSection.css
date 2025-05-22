@@ -1,0 +1,104 @@
+.tabs-section {
+  padding: 40px 0;
+  background-color: #f8f9fa;
+}
+
+.tabs-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabs-header {
+  display: flex;
+  border-bottom: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+.tab-button {
+  padding: 16px 24px;
+  border: none;
+  background: none;
+  font-weight: 500;
+  color: #071846;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-button:first-child {
+  border-radius: 8px 0 0 0;
+}
+
+.tab-button:last-child {
+  border-radius: 0 8px 0 0;
+}
+
+.tab-button.active {
+  color: #0AA5C5;
+  background-color: white;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #0AA5C5;
+}
+
+.tabs-content {
+  padding: 24px;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* WordPress content styling */
+.tab-pane h1,
+.tab-pane h2,
+.tab-pane h3,
+.tab-pane h4,
+.tab-pane h5,
+.tab-pane h6 {
+  color: #071846;
+  margin-bottom: 16px;
+}
+
+.tab-pane p {
+  margin-bottom: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.tab-pane img {
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0;
+}
+
+.tab-pane ul,
+.tab-pane ol {
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+
+.tab-pane li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #071846;
+  font-size: 18px;
+} 
