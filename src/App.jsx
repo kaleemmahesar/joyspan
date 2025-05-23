@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/style.css';
 import You from './pages/You';
 import Us from './pages/Us';
+import Profile from './pages/Profile';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -55,6 +56,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Us />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         }
       />

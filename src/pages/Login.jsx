@@ -203,9 +203,6 @@ const Login = () => {
 
             {showForgotPassword ? (
               <form onSubmit={handleForgotPassword} className="login-form">
-                <Typography variant="h6" gutterBottom align="center">
-                  Reset Your Password
-                </Typography>
                 
                 {forgotPasswordError && (
                   <Alert severity="error" sx={{ mb: 2 }}>
@@ -219,54 +216,48 @@ const Login = () => {
                   </Alert>
                 )}
 
-                <div className="form-group">
-                  <label htmlFor="forgot-email">Email Address</label>
-                  <TextField
-                    fullWidth
-                    id="forgot-email"
-                    type="email"
-                    value={forgotPasswordEmail}
-                    onChange={(e) => setForgotPasswordEmail(e.target.value)}
-                    required
-                    autoFocus
-                    sx={{ mb: 2 }}
-                  />
+                <div className="form-row">
+                  <div className="form-field">
+                    <label>Email Address</label>
+                    <TextField
+                      fullWidth
+                      id="forgot-email"
+                      type="email"
+                      value={forgotPasswordEmail}
+                      onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                      required
+                      autoFocus
+                      placeholder="Enter your email address"
+                    />
+                  </div>
                 </div>
 
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  disabled={forgotPasswordLoading}
-                  sx={{ 
-                    height: '56px',
-                    fontSize: '1.1rem',
-                    textTransform: 'none',
-                    mb: 2
-                  }}
-                >
-                  {forgotPasswordLoading ? <CircularProgress size={24} /> : 'Send Reset Instructions'}
-                </Button>
-
-                <Button
-                  fullWidth
-                  variant="text"
-                  onClick={() => {
-                    setShowForgotPassword(false);
-                    setForgotPasswordEmail('');
-                    setForgotPasswordError('');
-                    setForgotPasswordSuccess('');
-                  }}
-                  sx={{ 
-                    height: '56px',
-                    fontSize: '1rem',
-                    textTransform: 'none'
-                  }}
-                >
-                  Back to Login
-                </Button>
+                <div className="form-buttons">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className="login-button"
+                    fullWidth
+                    disabled={forgotPasswordLoading}
+                  >
+                    {forgotPasswordLoading ? <CircularProgress size={24} /> : 'Send Reset Instructions'}
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="primary"
+                    className="signup-button"
+                    onClick={() => {
+                      setShowForgotPassword(false);
+                      setForgotPasswordEmail('');
+                      setForgotPasswordError('');
+                      setForgotPasswordSuccess('');
+                    }}
+                    fullWidth
+                  >
+                    Back to Login
+                  </Button>
+                </div>
               </form>
             ) : (
               <Formik

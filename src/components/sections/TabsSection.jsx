@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
 import './TabsSection.css';
 
-const TabsSection = ({ tabs }) => {
+const TabsSection = ({ tabs = [], title }) => {
   const [activeTab, setActiveTab] = useState(0);
-  console.log(tabs)
+
+  // If tabs is undefined or empty, show a fallback message
+  if (!tabs || tabs.length === 0) {
+    return (
+      <section className="tabs-section">
+        <div className="container">
+          <div className="tabs-container">
+            <div className="no-data-message">
+              <h3>Content Unavailable</h3>
+              <p>Unable to load content at this time. Please try again later.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="tabs-section">
       <div className="container">
