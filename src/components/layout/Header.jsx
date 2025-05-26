@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchMenuItems } from '../../utils/menuApi';
 import { useAuth } from '../../utils/AuthContext';
+import Loader from '../Loader';
 import './Header.css';
 
 const Header = () => {
@@ -63,7 +64,7 @@ const Header = () => {
             <div className="col">
               <nav className="main-nav">
                 {loading ? (
-                  <div>Loading...</div>
+                  <Loader size="small" color="primary" />
                 ) : (
                   <ul className="nav-list">
                     {menuItems.map((item) => (

@@ -34,6 +34,7 @@ const Home = () => {
         const mappedTabs = data.map(tab => ({
           title: tab.title,
           subtitle: 'Activities for well-being of health professionals',
+          link: '/me',
           content: (
             <div className="row align-items-center">
               <div className="col-lg-8">

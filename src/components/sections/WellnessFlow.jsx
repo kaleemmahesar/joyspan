@@ -19,6 +19,7 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import * as Yup from 'yup';
 import axios from '../../utils/axios';
 import { jsPDF } from 'jspdf';
+import Loader from '../Loader';
 
 const steps = ['How are you feeling?', 'Choose an activity', 'Your personalized plan', 'Complete'];
 
@@ -42,6 +43,8 @@ const WellnessFlow = ({
   const [activityDescriptions, setActivityDescriptions] = useState({});
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState('');
+  const [activityPdfUrls, setActivityPdfUrls] = useState({});
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,15 +67,31 @@ const WellnessFlow = ({
         const activitiesRes = await axios.get(`/wp/v2/${activityPostType}`, {
           params: { per_page: 100, categories: activityCategoryId }
         });
+        
+        // Debug log to see the structure
+        console.log('Activity with PDF:', activitiesRes.data.find(post => post.acf?.attached_pdf));
+        
         const formattedActivities = activitiesRes.data.map(post => ({
           name: post.title.rendered,
-          description: post.content.rendered
+          description: post.content.rendered,
+          pdfUrl: post.acf?.attached_pdf?.url || ''
         }));
 
         setActivityOptions(formattedActivities.map(a => a.name));
         setActivityDescriptions(Object.fromEntries(
           formattedActivities.map(a => [a.name, a.description])
         ));
+        
+        // Create PDF URLs map
+        const pdfUrlsMap = Object.fromEntries(
+          formattedActivities
+            .filter(a => a.pdfUrl) // Only include activities with PDFs
+            .map(a => [a.name, a.pdfUrl])
+        );
+        
+        console.log('PDF URLs Map:', pdfUrlsMap);
+        setActivityPdfUrls(pdfUrlsMap);
+        
         setLoading(false);
       } catch (error) {
         console.error('Error fetching WordPress data:', error);
@@ -195,32 +214,6 @@ const WellnessFlow = ({
   const handleBack = () => setActiveStep((prev) => prev - 1);
   const handleSubmit = () => setIsCompleted(true);
 
-  const renderSuccessMessage = () => (
-    <Box sx={{ textAlign: 'center', py: 4 }}>
-      <CheckCircleOutline sx={{ fontSize: 80, color: '#4CAF50', mb: 2 }} />
-      <Typography variant="h4" gutterBottom sx={{ color: '#2E7D32', fontWeight: 'bold' }}>
-        Congratulations!
-      </Typography>
-      <Typography variant="h6" sx={{ mt: 2 }}>Thanks for completing the exercise</Typography>
-      <Typography sx={{ mt: 2 }}>{userEmail ? `You'll receive a PDF of the instructions at ${userEmail}` : 'You\'ll receive a PDF of the instructions at your registered email'}</Typography>
-      {pdfUrl && (
-        <Box sx={{ mt: 3 }}>
-          <Link href={pdfUrl} target="_blank" rel="noopener noreferrer" sx={{ color: '#0AA5C5' }}>
-            Click here to open your Wellness Plan again
-          </Link>
-        </Box>
-      )}
-      <Button variant="contained" onClick={() => { setIsCompleted(false); setActiveStep(0); }} sx={{ mt: 4 }}>
-        Start New Assessment
-      </Button>
-    </Box>
-  );
-
-  const validationSchema = Yup.object({
-    feeling: Yup.string().required('Please select how you are feeling'),
-    activity: Yup.string().required('Please select an activity')
-  });
-
   const getStepHeading = () => {
     switch (activeStep) {
       case 0: return "Let's start with how you're feeling";
@@ -261,45 +254,178 @@ const WellnessFlow = ({
       case 2:
         return (
           <Box>
-            <Typography variant="body1" className="me-text"><div className="me-text" dangerouslySetInnerHTML={{ __html: getFeelingBasedDescription(values.feeling) }} /></Typography>
+            <Typography variant="body1" className="me-text">
+              <div className="me-text" dangerouslySetInnerHTML={{ __html: getFeelingBasedDescription(values.feeling) }} />
+            </Typography>
             <Divider sx={{ my: 2 }} />
             <Card className="me-card">
               <CardContent className="me-card-content">
-                <Typography variant="h6" gutterBottom className="me-text">Recommended Activity: {values.activity}</Typography>
+                <Typography variant="h6" gutterBottom className="me-text">
+                  Recommended Activity: {values.activity}
+                </Typography>
                 <div className="me-text" dangerouslySetInnerHTML={{ __html: activityDescriptions[values.activity] }} />
-                <Typography variant="body2" color="text.secondary" className="me-text">Practice this activity daily for best results. Remember to be patient with yourself and celebrate small progress.</Typography>
+                <Typography variant="body2" color="text.secondary" className="me-text">
+                  Practice this activity daily for best results. Remember to be patient with yourself and celebrate small progress.
+                </Typography>
               </CardContent>
             </Card>
+            {values.activity && activityPdfUrls[values.activity] && (
+              <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Link
+                  href={activityPdfUrls[values.activity]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  underline="hover"
+                  sx={{
+                    color: '#0AA5C5',
+                    '&:hover': {
+                      color: '#0889A3'
+                    }
+                  }}
+                >
+                  View Activity PDF Guide
+                </Link>
+              </Box>
+            )}
           </Box>
         );
       case 3:
-        return renderSuccessMessage();
+        return renderSuccessMessage(values);
       default:
         return null;
     }
   };
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}><Typography>Loading...</Typography></Box>;
-  if (isCompleted) return <Container maxWidth="md" sx={{ py: 4 }}><Paper elevation={3} sx={{ p: 4 }}>{renderSuccessMessage()}</Paper></Container>;
+  const renderSuccessMessage = (values) => (
+    <Box sx={{ textAlign: 'center', py: 4 }}>
+      <img src="/ok.png" />
+      <Typography variant="h4" gutterBottom sx={{ color: '#2E7D32', fontWeight: 'bold' }}>
+        Congratulations!
+      </Typography>
+      <Typography variant="h6" sx={{ mt: 2 }}>Thanks for completing the exercise</Typography>
+      <Typography variant="h6" sx={{ mt: 2 }}>When you feel ready, try another exercise.</Typography>
+      {values.activity && activityPdfUrls[values.activity] && (
+        <Box sx={{ mt: 3 }}>
+          <Button
+            variant="contained"
+            onClick={() => handleSendEmail(values)}
+            disabled={isSendingEmail}
+            sx={{
+              backgroundColor: '#0AA5C5',
+              '&:hover': {
+                backgroundColor: '#0889A3'
+              },
+              minWidth: '250px'
+            }}
+          >
+            {isSendingEmail ? 'Sending...' : 'Send PDF to My Email'}
+          </Button>
+          {userEmail && (
+            <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
+              You'll receive a PDF of the instructions at {userEmail}
+            </Typography>
+          )}
+        </Box>
+      )}
+      {/* <Button 
+        variant="outlined" 
+        onClick={() => { setIsCompleted(false); setActiveStep(0); }} 
+        sx={{ mt: 4 }}
+      >
+        Start New Assessment
+      </Button> */}
+    </Box>
+  );
+
+  const handleSendEmail = async (values) => {
+    if (!values.activity || !activityPdfUrls[values.activity]) return;
+    
+    setIsSendingEmail(true);
+    try {
+      const formData = new FormData();
+      formData.append('pdf_url', activityPdfUrls[values.activity]);
+      formData.append('action', 'send_email');
+      formData.append('user_email', userEmail);
+      
+      await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData);
+      
+      // Show success message or notification here
+      alert('PDF has been sent to your email!');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Failed to send PDF to email. Please try again.');
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
+  const validationSchema = Yup.object({
+    feeling: Yup.string().required('Please select how you are feeling'),
+    activity: Yup.string().required('Please select an activity')
+  });
+
+  if (loading) return <Loader size="large" color="primary" />;
 
   return (
     <div className={`me-content step-${activeStep + 1}`}>
       <div className="container">
-        <Container maxWidth={false} sx={{ maxWidth: '960px !important', position: 'relative' }}>
+        <Container maxWidth={false}>
           <Paper elevation={0} sx={{ position: 'relative', zIndex: 1 }}>
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
               {({ values, setFieldValue, setTouched, errors, touched }) => (
                 <Form>
-                  {activeStep !== 3 && <Typography variant="h5" className="me-heading">{getStepHeading()}</Typography>}
-                  <div className="content-wrapper">
-                    {renderStepContent(activeStep, values, setFieldValue, errors, touched)}
-                    {activeStep !== 3 && (
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-                        <Button disabled={activeStep === 0} onClick={handleBack} variant="outlined" className="me-button me-button-outlined">Back</Button>
-                        <Button variant="contained" onClick={() => handleNext(values, { setTouched })} type={activeStep === steps.length - 1 ? 'submit' : 'button'} className="me-button me-button-contained">{activeStep === steps.length - 1 ? 'Finish' : 'Continue'}</Button>
-                      </Box>
-                    )}
-                  </div>
+                  {isCompleted ? (
+                    <Box sx={{ textAlign: 'center', py: 4 }}>
+                      <img src="/ok.png" />
+                      <Typography variant="h4" gutterBottom sx={{ color: '#2E7D32', fontWeight: 'bold' }}>
+                        Congratulations!
+                      </Typography>
+                      <Typography variant="h6" sx={{ mt: 2 }}>Thanks for completing the exercise</Typography>
+                      {values.activity && activityPdfUrls[values.activity] && (
+                        <Box sx={{ mt: 3 }}>
+                          <Button
+                            variant="contained"
+                            onClick={() => handleSendEmail(values)}
+                            disabled={isSendingEmail}
+                            sx={{
+                              backgroundColor: '#0AA5C5',
+                              '&:hover': {
+                                backgroundColor: '#0889A3'
+                              },
+                              minWidth: '250px'
+                            }}
+                          >
+                            {isSendingEmail ? 'Sending...' : 'Send PDF to My Email'}
+                          </Button>
+                          {userEmail && (
+                            <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
+                              Will be sent to: {userEmail}
+                            </Typography>
+                          )}
+                        </Box>
+                      )}
+                      <Button 
+                        variant="outlined" 
+                        onClick={() => { setIsCompleted(false); setActiveStep(0); }} 
+                        sx={{ mt: 4 }}
+                      >
+                        Start New Assessment
+                      </Button>
+                    </Box>
+                  ) : (
+                    <>
+                      {activeStep !== 3 && <Typography variant="h5" className="me-heading">{getStepHeading()}</Typography>}
+                      <div className="content-wrapper">
+                        {renderStepContent(activeStep, values, setFieldValue, errors, touched)}
+                        {activeStep !== 3 && (
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+                            <Button disabled={activeStep === 0} onClick={handleBack} variant="outlined" className="me-button me-button-outlined">Back</Button>
+                            <Button variant="contained" onClick={() => handleNext(values, { setTouched })} type={activeStep === steps.length - 1 ? 'submit' : 'button'} className="me-button me-button-contained">{activeStep === steps.length - 1 ? 'Finish' : 'Continue'}</Button>
+                          </Box>
+                        )}
+                      </div>
+                    </>
+                  )}
                 </Form>
               )}
             </Formik>

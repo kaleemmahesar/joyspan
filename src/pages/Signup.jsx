@@ -1,6 +1,6 @@
   import React, { useState } from 'react';
   import { useNavigate } from 'react-router-dom';
-  import { TextField, Button, Paper, Typography, Box, Alert, CircularProgress, MenuItem, Autocomplete } from '@mui/material';
+  import { TextField, Button, Paper, Typography, Box, Alert, CircularProgress, MenuItem, Autocomplete, Link } from '@mui/material';
   import { useAuth0 } from '@auth0/auth0-react';
   import { Formik, Form, Field } from 'formik';
   import * as Yup from 'yup';
@@ -503,14 +503,16 @@
                   >
                     {isSubmitting ? <CircularProgress size={24} /> : 'Sign Up'}
                   </Button>
-                  <Button
+                  <Link
+                    href="javascript:void(0)"
+                        variant="body2"
                     color="primary"
                     className="signup-button"
                     onClick={() => navigate('/login')}
                     fullWidth
                   >
                     Already have an account? Log in
-                  </Button>
+                  </Link>
                 </div>
               </Form>
             )}

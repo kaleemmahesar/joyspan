@@ -1,0 +1,37 @@
+.wellness-flow-container {
+  position: relative;
+  min-height: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.activity-option:hover {
+  background-color: rgba(10, 165, 197, 0.05);
+}
+
+.activity-pdf-link {
+  color: #0AA5C5;
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-left: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.activity-pdf-link:hover {
+  background-color: rgba(10, 165, 197, 0.1);
+  text-decoration: underline;
+} 

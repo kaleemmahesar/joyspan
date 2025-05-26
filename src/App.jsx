@@ -80,7 +80,14 @@ const App = () => {
   const clientId = 'LlivSOguqed6loGPIlOm9iWtgbesK9LQ';
   const clientSecret = 'BPAxvLcfD8eDdf9u7ov8HbXWy63cyygAOOSUnRXbY1l9-iwBOgHwd85ZaYGv7aJ-';
   const redirectUri = 'http://localhost:5173/callback';
-
+  React.useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        document.body.classList.add('user-logged-in');
+      } else {
+        document.body.classList.remove('user-logged-in');
+      }
+    }, []);
   return (
     <Auth0Provider
       domain={domain}

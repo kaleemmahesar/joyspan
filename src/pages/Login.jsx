@@ -38,6 +38,7 @@ const Login = () => {
   const [forgotPasswordError, setForgotPasswordError] = useState('');
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
 
+  
   // Handle Auth0 authentication success
   React.useEffect(() => {
     const handleAuth0Login = async () => {
@@ -57,7 +58,6 @@ const Login = () => {
 
           // Store token
           localStorage.setItem('token', token);
-          
           // Login with user data
           await login(userData);
           console.log('Auth0 login successful, redirecting...');
@@ -164,6 +164,7 @@ const Login = () => {
         // Login with user data
         await login(userData);
         console.log('Login successful, redirecting...');
+        document.body.classList.add('user-logged-in');
         navigate('/');
       }
     } catch (err) {
@@ -299,7 +300,7 @@ const Login = () => {
                     </div>
                     <div className="form-row">
                     <Link
-                        component="button"
+                      href="#"
                         variant="body2"
                         onClick={() => {
                           setShowForgotPassword(true);

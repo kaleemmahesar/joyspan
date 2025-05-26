@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './TabsSection.css';
+import { Link } from 'react-router-dom';
 
 const TabsSection = ({ tabs = [], title }) => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  // If tabs is undefined or empty, show a fallback message
   if (!tabs || tabs.length === 0) {
     return (
       <section className="tabs-section">
@@ -29,13 +27,13 @@ const TabsSection = ({ tabs = [], title }) => {
               <div className="row g-0">
                 {tabs.map((tab, index) => (
                   <div className="col-md-4 px-0" key={index}>
-                    <button
-                      className={`tab-button w-100 ${activeTab === index ? 'active' : ''}`}
-                      onClick={() => setActiveTab(index)}
+                    <Link
+                      to={tab.link || '#'}
+                      className={`tab-button w-100 ${index === 0 ? 'active' : ''} ${index === 2 ? 'last' : ''}`}
                     >
                       <b>{tab.title}</b>
                       <span>{tab.subtitle}</span>
-                    </button>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -43,8 +41,8 @@ const TabsSection = ({ tabs = [], title }) => {
             <div className="tab-content">
               <div className="row">
                 <div className="col-12">
-                  <h2>{tabs[activeTab].title}</h2>
-                  <div>{tabs[activeTab].content}</div>
+                  <h2>{tabs[0].title}</h2>
+                  <div>{tabs[0].content}</div>
                 </div>
               </div>
             </div>
@@ -55,4 +53,4 @@ const TabsSection = ({ tabs = [], title }) => {
   );
 };
 
-export default TabsSection; 
+export default TabsSection;

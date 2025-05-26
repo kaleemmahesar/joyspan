@@ -29,6 +29,8 @@
   border: 2px solid var(--dark-blue-color);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .tabs-section .tabs-header .tab-button b {
@@ -37,18 +39,21 @@
 }
 
 .tabs-section .tabs-header .tab-button span {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
 }
 
-.tabs-section .tabs-header .tab-button:hover {
+.tabs-section .tabs-header .tab-button:hover,
+.tabs-section .tabs-header .tab-button.active {
   color: var(--white-color);
   background-color: var(--dark-blue-color);
 }
 
 .tabs-section .tabs-header .tab-button.active {
-  color: var(--white-color);
-  background-color: var(--dark-blue-color);
+  border-radius: 8px 0 0 8px;
+}
+.tabs-section .tabs-header .tab-button.last {
+  border-radius: 0 8px 8px 0;
 }
 
 .tabs-section .tab-content h2 {
@@ -77,6 +82,14 @@
 
 .tab-text-content {
   padding-right: 2rem;
+}
+.tab-text-content p {
+  font-size: 18px;
+}
+
+.tab-text-content p strong{
+  color : #EA6C1D;
+  padding-right: 5px;
 }
 
 .tab-image-wrapper {

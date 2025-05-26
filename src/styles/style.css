@@ -344,3 +344,7 @@ section {
 .container {
   max-width: 1260px;
 }
+
+.user-logged-in .top-header {
+    display: none;
+}
