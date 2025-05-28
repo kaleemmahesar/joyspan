@@ -43,8 +43,7 @@
   font-weight: 400;
 }
 
-.tabs-section .tabs-header .tab-button:hover,
-.tabs-section .tabs-header .tab-button.active {
+.tabs-section .tabs-header .tab-button:hover {
   color: var(--white-color);
   background-color: var(--dark-blue-color);
 }

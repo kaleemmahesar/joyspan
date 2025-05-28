@@ -1,32 +1,44 @@
 .profile-background {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 2rem 0;
 }
 
-.profile-paper {
-  padding: 2rem;
-  border-radius: 16px !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+.main-body {
+  padding: 15px;
 }
 
+/* Profile Header */
 .profile-header {
-  text-align: center;
-  margin-bottom: 3rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  position: relative;
+  padding: 20px;
+}
+
+.profile-cover {
+  height: 200px;
+  background: linear-gradient(45deg, #0AA5C5, #0A85C5);
+  border-radius: 15px 15px 0 0;
   position: relative;
 }
 
-.avatar-container {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 1.5rem;
+.profile-avatar-container {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  
 }
 
 .profile-avatar {
-  border: 4px solid #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 160px;
+  height: 170px;
+  border: 5px solid #ffe4d3;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
@@ -34,143 +46,187 @@
   transform: scale(1.05);
 }
 
-.avatar-upload-button {
+.avatar-upload-btn {
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #fff !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
-.avatar-upload-button:hover {
+.avatar-upload-btn:hover {
+  background: #f8f9fa;
   transform: scale(1.1);
-  background-color: #f5f5f5 !important;
-}
-
-.profile-name {
-  margin: 1rem 0 0.5rem !important;
-  font-weight: 600 !important;
-  color: #1a237e;
-}
-
-.profile-profession {
-  font-size: 1.1rem !important;
-  color: #666 !important;
-  margin-bottom: 2rem !important;
 }
 
 .profile-info {
-  margin: 2rem 0;
+  margin-top: 60px;
+  text-align: center;
+  padding: 20px;
 }
 
-.info-item {
+/* Social Stats */
+.social-stats {
   display: flex;
-  align-items: flex-start;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.02);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.info-item:hover {
-  background: rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
-}
-
-.info-icon {
-  color: #1a237e;
-  margin-right: 1rem;
-  margin-top: 0.25rem;
-}
-
-.info-content {
-  flex: 1;
-}
-
-.info-content .MuiTypography-subtitle2 {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-}
-
-.info-content .MuiTypography-body1 {
-  font-size: 1rem;
-  color: #333;
-}
-
-.profile-actions {
-  display: flex;
-  gap: 1rem;
   justify-content: center;
-  margin-top: 2rem;
+  gap: 30px;
+  margin: 20px 0;
 }
 
-.profile-button {
-  min-width: 200px !important;
-  height: 48px !important;
-  font-size: 1rem !important;
-  text-transform: none !important;
-  border-radius: 24px !important;
-  transition: all 0.3s ease !important;
+.stat-item {
+  text-align: center;
 }
 
-.profile-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0;
 }
 
-/* Form field styles */
-.MuiTextField-root {
-  margin-bottom: 1rem;
+.stat-label {
+  font-size: 0.875rem;
+  color: #718096;
+  margin-bottom: 0;
 }
 
-.MuiTextField-root .MuiOutlinedInput-root {
-  border-radius: 12px;
-  transition: all 0.3s ease;
+/* Contact Info */
+.contact-info-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease;
 }
 
-.MuiTextField-root .MuiOutlinedInput-root:hover {
-  background-color: rgba(0, 0, 0, 0.02);
+.contact-info-item:last-child {
+  border-bottom: none;
 }
 
-.MuiTextField-root .MuiOutlinedInput-root.Mui-focused {
-  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+.contact-info-item:hover {
+  background-color: #f8f9fa;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .profile-paper {
-    padding: 1.5rem;
-    margin: 0 1rem;
+.contact-info-item i {
+  color: #0AA5C5;
+  width: 20px;
+}
+
+/* Card Styles */
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Form Styles */
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+  border-color: #0AA5C5;
+  box-shadow: 0 0 0 0.2rem rgba(10, 165, 197, 0.25);
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: #0AA5C5;
+  border-color: #0AA5C5;
+}
+
+.btn-primary:hover {
+  background-color: #0A85C5;
+  border-color: #0A85C5;
+}
+
+.btn-outline-primary {
+  color: #0AA5C5;
+  border-color: #0AA5C5;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0AA5C5;
+  border-color: #0AA5C5;
+}
+
+/* Alert Styles */
+.alert {
+  border-radius: 10px;
+  border: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profile-background {
+    padding: 1rem 0;
   }
-
-  .profile-button {
-    min-width: 150px !important;
+  
+  .profile-cover {
+    height: 150px;
   }
-
-  .profile-actions {
-    flex-direction: column;
-    align-items: center;
+  
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
   }
-
-  .info-item {
-    padding: 0.75rem;
+  
+  .profile-info {
+    margin-top: 50px;
+  }
+  
+  .social-stats {
+    gap: 20px;
+  }
+  
+  .stat-value {
+    font-size: 1.25rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
   }
 }
 
-/* Loading state styles */
-.MuiCircularProgress-root {
-  color: #fff !important;
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Alert styles */
-.MuiAlert-root {
-  border-radius: 12px !important;
-  margin-bottom: 1.5rem !important;
-}
-
-/* Divider styles */
-.MuiDivider-root {
-  margin: 2rem 0 !important;
-  opacity: 0.1;
+.MuiCardContent-root {
+  animation: fadeIn 0.3s ease-out;
 } 

@@ -1,29 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Container,
-  Paper,
-  Typography,
-  Avatar,
-  Grid,
-  Button,
-  TextField,
-  Divider,
-  IconButton,
-  CircularProgress,
-  Alert
-} from '@mui/material';
-import { PhotoCamera, Edit as EditIcon, Save as SaveIcon, Cancel as CancelIcon, Email, Phone, Business, LocationOn } from '@mui/icons-material';
 import { useAuth } from '../utils/AuthContext';
 import axios from '../utils/axios';
+import WellnessHistory from '../components/WellnessHistory';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './Profile.css';
 
 const Profile = () => {
   const { user } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [profileData, setProfileData] = useState({
     name: '',
     email: '',
@@ -39,7 +24,6 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         setLoading(true);
-        // Get the token from localStorage
         const token = localStorage.getItem('token');
         
         if (!token) {
@@ -52,28 +36,9 @@ const Profile = () => {
           }
         });
 
-        // Detailed logging of the response
-        console.log('Full API Response:', response);
-        console.log('User data from API:', response.data);
-        console.log('Email from API:', response.data.email);
-        console.log('Meta data:', response.data.meta);
-
         const userData = response.data;
         
-        // Map the WordPress user data to our profile data using meta fields
         setProfileData({
-          name: userData.name || '',
-          email: userData.email || userData.user_email || '', // Try both email fields
-          username: userData.username || '',
-          profession: userData.meta?.profession || '',
-          phone: userData.meta?.phone || '',
-          organization: userData.meta?.organization || '',
-          country: userData.meta?.country || '',
-          avatar: userData.avatar_urls?.['96'] || ''
-        });
-
-        // Log the final profile data
-        console.log('Final profile data:', {
           name: userData.name || '',
           email: userData.email || userData.user_email || '',
           username: userData.username || '',
@@ -95,241 +60,96 @@ const Profile = () => {
     fetchUserProfile();
   }, []);
 
-  const handleChange = (e) => {
-    setProfileData({
-      ...profileData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleAvatarChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-      
-      const response = await axios.post('/wp/v2/media', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      setProfileData({
-        ...profileData,
-        avatar: response.data.source_url
-      });
-      setSuccess('Profile picture updated successfully');
-    } catch (err) {
-      console.error('Error uploading avatar:', err);
-      setError('Failed to update profile picture');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setSuccess('');
-
-    try {
-      const token = localStorage.getItem('token');
-      
-      const response = await axios.post('/wp/v2/users/me', {
-        name: profileData.name,
-        email: profileData.email
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.data) {
-        setSuccess('Profile updated successfully');
-        setIsEditing(false);
-      }
-    } catch (err) {
-      console.error('Error updating profile:', err);
-      setError('Failed to update profile');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   if (loading) {
     return (
       <div className="profile-background">
-        <Container maxWidth="lg">
-          <Box sx={{ py: 8, display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress />
-          </Box>
-        </Container>
+        <div className="container">
+          <div className="d-flex justify-content-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="profile-background">
-      <Container maxWidth="lg">
-        <Box sx={{ py: 8 }}>
-          <Paper elevation={3} className="profile-paper">
-            <div className="profile-header">
-              <div className="avatar-container">
-                <Avatar
-                  src={profileData.avatar}
+      <div className="container">
+        <div className="main-body">
+          {/* Profile Header */}
+          <div className="profile-header">
+            <div className="profile-cover">
+              <div className="profile-avatar-container">
+                <img
+                  src="/profile.jpg"
                   alt={profileData.name}
-                  sx={{ width: 120, height: 120 }}
-                  className="profile-avatar"
+                  className="profile-avatar rounded-circle"
                 />
-                <input
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  id="avatar-upload"
-                  type="file"
-                  onChange={handleAvatarChange}
-                />
-                <label htmlFor="avatar-upload">
-                  <IconButton
-                    color="primary"
-                    component="span"
-                    className="avatar-upload-button"
-                  >
-                    <PhotoCamera />
-                  </IconButton>
-                </label>
               </div>
-              <Typography variant="h4" className="profile-name">
-                {profileData.name}
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary" className="profile-profession">
-                {profileData.profession || 'No profession specified'}
-              </Typography>
             </div>
-
-            {error && (
-              <Alert severity="error" sx={{ mb: 2 }}>
-                {error}
-              </Alert>
-            )}
-            {success && (
-              <Alert severity="success" sx={{ mb: 2 }}>
-                {success}
-              </Alert>
-            )}
-
             <div className="profile-info">
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                  <div className="info-item">
-                    <Email className="info-icon" />
-                    <div className="info-content">
-                      <Typography variant="subtitle2" color="textSecondary">Email</Typography>
-                      <Typography variant="body1">{profileData.email}</Typography>
-                    </div>
+              <h4 className="mb-1">{profileData.name}</h4>
+              <p className="text-muted mb-3">
+                {profileData.profession || 'No profession specified'}
+              </p>
+            </div>
+          </div>
+
+          <div className="row">
+            {/* Left Column - Contact Information */}
+            <div className="col-md-4">
+              <div className="card mb-4">
+                <div className="card-body p-4">
+                  <h6 className="card-title mb-3">
+                    <i className="fas fa-address-card me-2"></i>
+                    Contact Information
+                  </h6>
+                  <div className="contact-info-item px-0">
+                    <i className="fas fa-envelope me-2"></i>
+                    <span>{profileData.email}</span>
                   </div>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <div className="info-item">
-                    <Phone className="info-icon" />
-                    <div className="info-content">
-                      <Typography variant="subtitle2" color="textSecondary">Phone</Typography>
-                      <Typography variant="body1">{profileData.phone || 'Not provided'}</Typography>
-                    </div>
+                  <div className="contact-info-item px-0">
+                    <i className="fas fa-phone me-2"></i>
+                    <span>{profileData.phone || 'Not provided'}</span>
                   </div>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <div className="info-item">
-                    <Business className="info-icon" />
-                    <div className="info-content">
-                      <Typography variant="subtitle2" color="textSecondary">Organization</Typography>
-                      <Typography variant="body1">{profileData.organization || 'Not provided'}</Typography>
-                    </div>
+                  <div className="contact-info-item px-0">
+                    <i className="fas fa-building me-2"></i>
+                    <span>{profileData.organization || 'Not provided'}</span>
                   </div>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <div className="info-item">
-                    <LocationOn className="info-icon" />
-                    <div className="info-content">
-                      <Typography variant="subtitle2" color="textSecondary">Country</Typography>
-                      <Typography variant="body1">{profileData.country || 'Not provided'}</Typography>
-                    </div>
+                  <div className="contact-info-item px-0">
+                    <i className="fas fa-map-marker-alt me-2"></i>
+                    <span>{profileData.country || 'Not provided'}</span>
                   </div>
-                </Grid>
-              </Grid>
+                </div>
+              </div>
             </div>
 
-            <Divider sx={{ my: 4 }} />
+            {/* Right Column - Wellness History */}
+            <div className="col-md-8">
+              <div className="card">
+                <div className="card-body p-4">
+                  {error && (
+                    <div className="alert alert-danger" role="alert">
+                      <i className="fas fa-exclamation-circle me-2"></i>
+                      {error}
+                    </div>
+                  )}
 
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Full Name"
-                    name="name"
-                    value={profileData.name}
-                    onChange={handleChange}
-                    disabled={!isEditing}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    fullWidth
-                    label="Email"
-                    name="email"
-                    value={profileData.email}
-                    onChange={handleChange}
-                    disabled={!isEditing}
-                  />
-                </Grid>
-              </Grid>
-
-              <div className="profile-actions">
-                {isEditing ? (
-                  <>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      className="profile-button"
-                      disabled={loading}
-                      startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
-                    >
-                      Save Changes
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      className="profile-button"
-                      onClick={() => setIsEditing(false)}
-                      startIcon={<CancelIcon />}
-                    >
-                      Cancel
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className="profile-button"
-                    onClick={() => setIsEditing(true)}
-                    startIcon={<EditIcon />}
-                  >
-                    Edit Profile
-                  </Button>
-                )}
+                  <div>
+                    <h6 className="card-title mb-3">
+                      <i className="fas fa-history me-2"></i>
+                      Wellness History
+                    </h6>
+                    <WellnessHistory />
+                  </div>
+                </div>
               </div>
-            </form>
-          </Paper>
-        </Box>
-      </Container>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

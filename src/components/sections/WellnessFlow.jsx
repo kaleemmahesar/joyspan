@@ -13,13 +13,20 @@ import {
   Divider,
   Card,
   CardContent,
-  Link
+  Link,
+  Stepper,
+  Step,
+  StepLabel,
+  Grid,
+  Alert
 } from '@mui/material';
 import { CheckCircleOutline } from '@mui/icons-material';
 import * as Yup from 'yup';
 import axios from '../../utils/axios';
 import { jsPDF } from 'jspdf';
 import Loader from '../Loader';
+import './WellnessFlow.css';
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['How are you feeling?', 'Choose an activity', 'Your personalized plan', 'Complete'];
 
@@ -45,6 +52,11 @@ const WellnessFlow = ({
   const [userEmail, setUserEmail] = useState('');
   const [activityPdfUrls, setActivityPdfUrls] = useState({});
   const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [selectedFeeling, setSelectedFeeling] = useState('');
+  const [selectedActivity, setSelectedActivity] = useState('');
+  const [section, setSection] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,9 +96,7 @@ const WellnessFlow = ({
         
         // Create PDF URLs map
         const pdfUrlsMap = Object.fromEntries(
-          formattedActivities
-            .filter(a => a.pdfUrl) // Only include activities with PDFs
-            .map(a => [a.name, a.pdfUrl])
+          formattedActivities.map(a => [a.name, a.pdfUrl])
         );
         
         console.log('PDF URLs Map:', pdfUrlsMap);
@@ -106,89 +116,107 @@ const WellnessFlow = ({
     return feelingData ? feelingData.description : "We've selected activities that will help you improve your overall well-being and find balance in your life.";
   };
 
+  // Comment out PDF generation function
+  /*
   const generatePDF = async (values) => {
-    const feelingOption = feelingOptions.find(opt => opt.value === values.feeling);
-    const doc = new jsPDF();
-    doc.setFont('helvetica');
-    doc.setFillColor(10, 165, 197);
-    doc.rect(0, 0, 210, 40, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.text(title, 105, 25, { align: 'center' });
-    doc.setTextColor(0, 0, 0);
+    try {
+      const feelingOption = feelingOptions.find(opt => opt.value === values.feeling);
+      const doc = new jsPDF();
+      doc.setFont('helvetica');
+      doc.setFillColor(10, 165, 197);
+      doc.rect(0, 0, 210, 40, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(24);
+      doc.setFont('helvetica', 'bold');
+      doc.text(title, 105, 25, { align: 'center' });
+      doc.setTextColor(0, 0, 0);
 
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('How are you feeling:', 20, 60);
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'normal');
-    doc.text(feelingOption ? feelingOption.label : values.feeling, 30, 70);
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      doc.text('How are you feeling:', 20, 60);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'normal');
+      doc.text(feelingOption ? feelingOption.label : values.feeling, 30, 70);
 
-    doc.setFontSize(12);
-    const feelingDescription = getFeelingBasedDescription(values.feeling);
-    const splitDescription = doc.splitTextToSize(feelingDescription, 170);
-    doc.text(splitDescription, 20, 85);
+      doc.setFontSize(12);
+      const feelingDescription = getFeelingBasedDescription(values.feeling);
+      const splitDescription = doc.splitTextToSize(feelingDescription, 170);
+      doc.text(splitDescription, 20, 85);
 
-    doc.setDrawColor(200, 200, 200);
-    doc.line(20, 110, 190, 110);
+      doc.setDrawColor(200, 200, 200);
+      doc.line(20, 110, 190, 110);
 
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Your Selected Activity:', 20, 130);
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'normal');
-    doc.text(values.activity, 30, 140);
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Your Selected Activity:', 20, 130);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'normal');
+      doc.text(values.activity, 30, 140);
 
-    const activityDescription = activityDescriptions[values.activity];
-    const splitActivityDesc = doc.splitTextToSize(activityDescription, 170);
-    doc.setFontSize(12);
-    doc.text(splitActivityDesc, 20, 155);
+      const activityDescription = activityDescriptions[values.activity];
+      const splitActivityDesc = doc.splitTextToSize(activityDescription, 170);
+      doc.setFontSize(12);
+      doc.text(splitActivityDesc, 20, 155);
 
-    doc.line(20, 180, 190, 180);
+      doc.line(20, 180, 190, 180);
 
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Practice Tips:', 20, 200);
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
+      doc.setFontSize(18);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Practice Tips:', 20, 200);
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'normal');
 
-    const practiceTips = [
-      '• Practice this activity daily for best results',
-      '• Find a quiet, comfortable space',
-      '• Set aside 10-15 minutes for your practice',
-      '• Be patient with yourself and celebrate small progress',
-      '• Track your progress in a journal if helpful'
-    ];
-    practiceTips.forEach((tip, i) => {
-      doc.text(tip, 30, 210 + i * 10);
-    });
+      const practiceTips = [
+        '• Practice this activity daily for best results',
+        '• Find a quiet, comfortable space',
+        '• Set aside 10-15 minutes for your practice',
+        '• Be patient with yourself and celebrate small progress',
+        '• Track your progress in a journal if helpful'
+      ];
+      practiceTips.forEach((tip, i) => {
+        doc.text(tip, 30, 210 + i * 10);
+      });
 
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text('Generated on: ' + new Date().toLocaleDateString(), 20, 280);
-    doc.setFontSize(8);
-    doc.text('Created with JoySpan', 105, 285, { align: 'center' });
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      doc.text('Generated on: ' + new Date().toLocaleDateString(), 20, 280);
+      doc.setFontSize(8);
+      doc.text('Created with JoySpan', 105, 285, { align: 'center' });
 
-    const pdfBlob = doc.output('blob');
-    const formData = new FormData();
-    formData.append('pdf', pdfBlob, 'wellness-plan.pdf');
+      const pdfBlob = doc.output('blob');
+      const formData = new FormData();
+      formData.append('pdf', pdfBlob, 'wellness-plan.pdf');
 
-    const response = await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      withCredentials: true
-    });
+      try {
+        const response = await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          withCredentials: true
+        });
 
-    if (response.data?.success && response.data.url) {
-      setPdfUrl(response.data.url);
-      return response.data.url;
+        if (response.data?.success && response.data.url) {
+          setPdfUrl(response.data.url);
+          return response.data.url;
+        }
+      } catch (uploadError) {
+        console.warn('PDF upload failed, but continuing with wellness data save:', uploadError);
+        // Continue with the process even if PDF upload fails
+        return null;
+      }
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      return null;
     }
   };
+  */
 
-  const handleNext = async (values, { setTouched }) => {
+  const handleNext = (values, { setTouched }) => {
+    console.log('Current step:', activeStep);
+    console.log('Required values:', values);
+
+    // Check if required values are present based on current step
     if (activeStep === 0 && !values.feeling) {
       setTouched({ feeling: true });
       return;
@@ -197,29 +225,113 @@ const WellnessFlow = ({
       setTouched({ activity: true });
       return;
     }
+
+    // If we're at the second-to-last step, save the data
     if (activeStep === steps.length - 2) {
-      try {
-        const url = await generatePDF(values);
-        const formData = new FormData();
-        formData.append('pdf_url', url);
-        formData.append('action', 'send_email');
-        await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData);
-      } catch (e) {
-        console.error('PDF generation or email failed', e);
-      }
+      handleSubmit(values);
     }
-    setActiveStep((prev) => prev + 1);
+
+    // Move to next step
+    setActiveStep(prev => {
+      console.log('Moving from step', prev, 'to step', prev + 1);
+      return prev + 1;
+    });
   };
 
-  const handleBack = () => setActiveStep((prev) => prev - 1);
-  const handleSubmit = () => setIsCompleted(true);
+  const handleBack = () => {
+    setActiveStep(prev => prev - 1);
+  };
 
-  const getStepHeading = () => {
+  const handleSubmit = async (values) => {
+    console.log('Submitting wellness data...');
+    
+    // Get the feeling label from the selected option
+    const feelingOption = feelingOptions.find(opt => opt.value === values.feeling);
+    console.log('Selected feeling option:', feelingOption);
+    const path = window.location.pathname;
+    const section = path.split('/')[1]; // Get 'me', 'you', or 'us' from the URL
+    const sectionName = section.charAt(0).toUpperCase() + section.slice(1);
+    console.log('Section name:', sectionName);  
+    const wellnessData = {
+      feeling: feelingOption ? feelingOption.label : values.feeling,
+      feeling_value: values.feeling,
+      activity: values.activity,
+      section: sectionName,
+      completed_at: new Date().toISOString(),
+      activity_description: activityDescriptions[values.activity],
+      feeling_description: getFeelingBasedDescription(values.feeling)
+    };
+
+    console.log('Saving wellness data:', wellnessData);
+
+    try {
+      const token = localStorage.getItem('token');
+      console.log('Using token:', token ? 'Token exists' : 'No token found');
+
+      const response = await axios.post('/wp/v2/wellness-history', wellnessData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log('Wellness data saved successfully:', response.data);
+      setIsCompleted(true);
+    } catch (error) {
+      console.error('Error saving wellness data:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
+    }
+  };
+
+  const handleSendEmail = async (values) => {
+    if (!values.activity || !activityPdfUrls[values.activity]) return;
+    
+    setIsSendingEmail(true);
+    try {
+      const formData = new FormData();
+      formData.append('pdf_url', activityPdfUrls[values.activity]);
+      formData.append('action', 'send_email');
+      formData.append('user_email', userEmail);
+      
+      try {
+        await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData);
+        alert('PDF has been sent to your email!');
+      } catch (error) {
+        console.warn('Email sending failed:', error);
+        alert('Failed to send PDF to email. You can still download it manually.');
+      }
+    } catch (error) {
+      console.error('Error in email process:', error);
+      alert('Failed to process email request. You can still download the PDF manually.');
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
+  const getStepHeading = (values) => {
+    const path = window.location.pathname;
+    const section = path.split('/')[1]; // Get 'me', 'you', or 'us' from the URL
+    const sectionName = section.charAt(0).toUpperCase() + section.slice(1);
     switch (activeStep) {
-      case 0: return "Let's start with how you're feeling";
-      case 1: return "Choose an activity that resonates with you";
-      case 2: return "Here's your personalized plan";
-      default: return "";
+      case 0: 
+        
+        return `<b>${sectionName}</b> - Choose a Feeling that applies to you or that interests you`;
+      case 1: {
+        const feelingOption = feelingOptions.find(opt => opt.value === values?.feeling);
+        const feelingLabel = feelingOption ? feelingOption.label : '';
+        return `<b>${sectionName}</b> - Choose an activity for ${feelingLabel}`;
+      }
+      case 2: {
+        const feelingOption = feelingOptions.find(opt => opt.value === values?.feeling);
+        const feelingLabel = feelingOption ? feelingOption.label : '';
+        return `<b>${sectionName}</b> - Your plan for ${feelingLabel} with ${values?.activity || ''}`;
+      }
+      default: 
+        return "";
     }
   };
 
@@ -253,109 +365,57 @@ const WellnessFlow = ({
         );
       case 2:
         return (
-          <Box>
+          <Box sx={{ mb: 5 }} className="me-card-step2">
             <Typography variant="body1" className="me-text">
               <div className="me-text" dangerouslySetInnerHTML={{ __html: getFeelingBasedDescription(values.feeling) }} />
             </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Card className="me-card">
-              <CardContent className="me-card-content">
-                <Typography variant="h6" gutterBottom className="me-text">
-                  Recommended Activity: {values.activity}
-                </Typography>
-                <div className="me-text" dangerouslySetInnerHTML={{ __html: activityDescriptions[values.activity] }} />
-                <Typography variant="body2" color="text.secondary" className="me-text">
-                  Practice this activity daily for best results. Remember to be patient with yourself and celebrate small progress.
-                </Typography>
-              </CardContent>
-            </Card>
+            <div className="me-text" dangerouslySetInnerHTML={{ __html: activityDescriptions[values.activity] }} />
+          </Box>
+        );
+      case 3:
+        return (
+          <Box className="success-container">
+            <img src="/ok.png" className="success-image" />
+            <Typography variant="h4" className="success-title">
+              Congratulations!
+            </Typography>
+            <Typography variant="h6" className="success-subtitle">Thanks for completing the exercise</Typography>
+            <Typography variant="h6" className="success-subtitle">When you feel ready, try another exercise.</Typography>
+            {isCompleted && (
+            <Typography variant="body2" color="textSecondary" sx={{ mt: 1, mb: 2 }}>
+              Your activity has been saved to your wellness history
+            </Typography>
+            )}
             {values.activity && activityPdfUrls[values.activity] && (
-              <Box sx={{ mt: 3, textAlign: 'center' }}>
-                <Link
+              <Box className="action-buttons">
+                <Button
+                  variant="outlined"
                   href={activityPdfUrls[values.activity]}
                   target="_blank"
                   rel="noopener noreferrer"
-                  underline="hover"
-                  sx={{
-                    color: '#0AA5C5',
-                    '&:hover': {
-                      color: '#0889A3'
-                    }
-                  }}
+                  className="download-button"
                 >
-                  View Activity PDF Guide
-                </Link>
+                  Download Activity PDF
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => handleSendEmail(values)}
+                  disabled={isSendingEmail}
+                  className="email-button"
+                >
+                  {isSendingEmail ? 'Sending...' : 'Send PDF to My Email'}
+                </Button>
+                {userEmail && (
+                  <Typography variant="body2" className="email-text">
+                    You'll receive a PDF of the instructions at {userEmail}
+                  </Typography>
+                )}
               </Box>
             )}
           </Box>
         );
-      case 3:
-        return renderSuccessMessage(values);
       default:
         return null;
-    }
-  };
-
-  const renderSuccessMessage = (values) => (
-    <Box sx={{ textAlign: 'center', py: 4 }}>
-      <img src="/ok.png" />
-      <Typography variant="h4" gutterBottom sx={{ color: '#2E7D32', fontWeight: 'bold' }}>
-        Congratulations!
-      </Typography>
-      <Typography variant="h6" sx={{ mt: 2 }}>Thanks for completing the exercise</Typography>
-      <Typography variant="h6" sx={{ mt: 2 }}>When you feel ready, try another exercise.</Typography>
-      {values.activity && activityPdfUrls[values.activity] && (
-        <Box sx={{ mt: 3 }}>
-          <Button
-            variant="contained"
-            onClick={() => handleSendEmail(values)}
-            disabled={isSendingEmail}
-            sx={{
-              backgroundColor: '#0AA5C5',
-              '&:hover': {
-                backgroundColor: '#0889A3'
-              },
-              minWidth: '250px'
-            }}
-          >
-            {isSendingEmail ? 'Sending...' : 'Send PDF to My Email'}
-          </Button>
-          {userEmail && (
-            <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
-              You'll receive a PDF of the instructions at {userEmail}
-            </Typography>
-          )}
-        </Box>
-      )}
-      {/* <Button 
-        variant="outlined" 
-        onClick={() => { setIsCompleted(false); setActiveStep(0); }} 
-        sx={{ mt: 4 }}
-      >
-        Start New Assessment
-      </Button> */}
-    </Box>
-  );
-
-  const handleSendEmail = async (values) => {
-    if (!values.activity || !activityPdfUrls[values.activity]) return;
-    
-    setIsSendingEmail(true);
-    try {
-      const formData = new FormData();
-      formData.append('pdf_url', activityPdfUrls[values.activity]);
-      formData.append('action', 'send_email');
-      formData.append('user_email', userEmail);
-      
-      await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData);
-      
-      // Show success message or notification here
-      alert('PDF has been sent to your email!');
-    } catch (error) {
-      console.error('Error sending email:', error);
-      alert('Failed to send PDF to email. Please try again.');
-    } finally {
-      setIsSendingEmail(false);
     }
   };
 
@@ -371,61 +431,40 @@ const WellnessFlow = ({
       <div className="container">
         <Container maxWidth={false}>
           <Paper elevation={0} sx={{ position: 'relative', zIndex: 1 }}>
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+            <Formik 
+              initialValues={initialValues} 
+              validationSchema={validationSchema} 
+              onSubmit={handleSubmit}
+            >
               {({ values, setFieldValue, setTouched, errors, touched }) => (
                 <Form>
-                  {isCompleted ? (
-                    <Box sx={{ textAlign: 'center', py: 4 }}>
-                      <img src="/ok.png" />
-                      <Typography variant="h4" gutterBottom sx={{ color: '#2E7D32', fontWeight: 'bold' }}>
-                        Congratulations!
-                      </Typography>
-                      <Typography variant="h6" sx={{ mt: 2 }}>Thanks for completing the exercise</Typography>
-                      {values.activity && activityPdfUrls[values.activity] && (
-                        <Box sx={{ mt: 3 }}>
-                          <Button
-                            variant="contained"
-                            onClick={() => handleSendEmail(values)}
-                            disabled={isSendingEmail}
-                            sx={{
-                              backgroundColor: '#0AA5C5',
-                              '&:hover': {
-                                backgroundColor: '#0889A3'
-                              },
-                              minWidth: '250px'
-                            }}
-                          >
-                            {isSendingEmail ? 'Sending...' : 'Send PDF to My Email'}
-                          </Button>
-                          {userEmail && (
-                            <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
-                              Will be sent to: {userEmail}
-                            </Typography>
-                          )}
-                        </Box>
-                      )}
-                      <Button 
-                        variant="outlined" 
-                        onClick={() => { setIsCompleted(false); setActiveStep(0); }} 
-                        sx={{ mt: 4 }}
-                      >
-                        Start New Assessment
-                      </Button>
-                    </Box>
-                  ) : (
-                    <>
-                      {activeStep !== 3 && <Typography variant="h5" className="me-heading">{getStepHeading()}</Typography>}
-                      <div className="content-wrapper">
-                        {renderStepContent(activeStep, values, setFieldValue, errors, touched)}
-                        {activeStep !== 3 && (
-                          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-                            <Button disabled={activeStep === 0} onClick={handleBack} variant="outlined" className="me-button me-button-outlined">Back</Button>
-                            <Button variant="contained" onClick={() => handleNext(values, { setTouched })} type={activeStep === steps.length - 1 ? 'submit' : 'button'} className="me-button me-button-contained">{activeStep === steps.length - 1 ? 'Finish' : 'Continue'}</Button>
-                          </Box>
-                        )}
-                      </div>
-                    </>
+                  
+                  {activeStep !== 3 && (
+                    <Typography 
+                      variant="h5" 
+                      className="me-heading"
+                      dangerouslySetInnerHTML={{ __html: getStepHeading(values) }}
+                    />
                   )}
+                  <div className="content-wrapper">
+                    {renderStepContent(activeStep, values, setFieldValue, errors, touched)}
+                    {activeStep !== 3 && (
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+                        {activeStep > 0 && (
+                          <Button onClick={handleBack} variant="outlined" className="me-button me-button-outlined">Back</Button>
+                        )}
+                        <Button 
+                          variant="contained" 
+                          onClick={() => handleNext(values, { setTouched })}
+                          type="button"
+                          className="me-button me-button-contained"
+                          sx={{ ml: activeStep === 0 ? 'auto' : 0 }}
+                        >
+                          {activeStep === steps.length - 1 ? 'Finish' : 'Continue'}
+                        </Button>
+                      </Box>
+                    )}
+                  </div>
                 </Form>
               )}
             </Formik>
