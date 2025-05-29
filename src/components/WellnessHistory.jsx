@@ -68,7 +68,8 @@ const WellnessHistory = () => {
             <thead className="table-light">
               <tr>
                 <th>Date</th>
-                <th>Section</th>
+                <th>Page</th>
+                <th>Activity Pdf</th>
                 <th>Feeling</th>
                 <th>Activity</th>
               </tr>
@@ -84,6 +85,15 @@ const WellnessHistory = () => {
                       <span className="badge" style={{ backgroundColor: meta.color, color: 'white' }}>
                         {meta.label}
                       </span>
+                    </td>
+                    <td>
+                      {item.activity_pdf_url ?
+                      <a className="badge" href={item.activity_pdf_url} style={{ backgroundColor: 'yellowgreen', color: 'white' }} target="_blank" rel="noopener noreferrer">   
+                        {item.activity_pdf_url ? 'Download PDF' : 'No Attached PDF'}
+                      </a>
+                    : <span className="badge" style={{ backgroundColor: 'GrayText' }}>   
+                        {item.activity_pdf_url ? 'Download PDF' : 'No Attached PDF'}
+                      </span>}
                     </td>
                     <td>{item.feeling}</td>
                     <td>{item.activity}</td>

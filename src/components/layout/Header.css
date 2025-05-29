@@ -143,6 +143,14 @@
   text-transform: capitalize;
 }
 
+.user-name a {
+  color: #EA6C1D;
+}
+
+.user-name a:hover {
+  color: #c5530d;
+}
+
 @media (max-width: 768px) {
   .top-header .welcome-text {
     font-size: 18px;

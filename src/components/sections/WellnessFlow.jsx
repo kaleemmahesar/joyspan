@@ -259,10 +259,11 @@ const WellnessFlow = ({
       section: sectionName,
       completed_at: new Date().toISOString(),
       activity_description: activityDescriptions[values.activity],
-      feeling_description: getFeelingBasedDescription(values.feeling)
+      feeling_description: getFeelingBasedDescription(values.feeling),
+      activity_pdf_url: activityPdfUrls[values.activity] || '',
     };
 
-    console.log('Saving wellness data:', wellnessData);
+    console.log('Saving wellness datagggggg:', wellnessData);
 
     try {
       const token = localStorage.getItem('token');
@@ -275,7 +276,7 @@ const WellnessFlow = ({
         }
       });
 
-      console.log('Wellness data saved successfully:', response.data);
+      console.log('Wellness data saved successfullygfgf:', response.data);
       setIsCompleted(true);
     } catch (error) {
       console.error('Error saving wellness data:', error);

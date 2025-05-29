@@ -80,6 +80,8 @@ const Profile = () => {
         <div className="main-body">
           {/* Profile Header */}
           <div className="profile-header">
+            <div className='row'>
+              <div className='col-md-12'>
             <div className="profile-cover">
               <div className="profile-avatar-container">
                 <img
@@ -94,40 +96,33 @@ const Profile = () => {
               <p className="text-muted mb-3">
                 {profileData.profession || 'No profession specified'}
               </p>
-            </div>
-          </div>
-
-          <div className="row">
-            {/* Left Column - Contact Information */}
-            <div className="col-md-4">
-              <div className="card mb-4">
-                <div className="card-body p-4">
-                  <h6 className="card-title mb-3">
-                    <i className="fas fa-address-card me-2"></i>
-                    Contact Information
-                  </h6>
-                  <div className="contact-info-item px-0">
+              <div className="profile-card-body">
+                  <div className="contact-info-item">
                     <i className="fas fa-envelope me-2"></i>
                     <span>{profileData.email}</span>
                   </div>
-                  <div className="contact-info-item px-0">
+                  <div className="contact-info-item">
                     <i className="fas fa-phone me-2"></i>
                     <span>{profileData.phone || 'Not provided'}</span>
                   </div>
-                  <div className="contact-info-item px-0">
+                  <div className="contact-info-item">
                     <i className="fas fa-building me-2"></i>
                     <span>{profileData.organization || 'Not provided'}</span>
                   </div>
-                  <div className="contact-info-item px-0">
+                  <div className="contact-info-item">
                     <i className="fas fa-map-marker-alt me-2"></i>
                     <span>{profileData.country || 'Not provided'}</span>
                   </div>
                 </div>
-              </div>
             </div>
+            </div>
+            
+            </div>
+          </div>
 
+          <div className="row">
             {/* Right Column - Wellness History */}
-            <div className="col-md-8">
+            <div className="col-md-12">
               <div className="card">
                 <div className="card-body p-4">
                   {error && (
