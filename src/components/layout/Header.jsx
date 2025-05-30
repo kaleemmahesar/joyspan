@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchMenuItems } from '../../utils/menuApi';
+import { fetchMenuItemsHeader } from '../../utils/menuApi';
 import { useAuth } from '../../utils/AuthContext';
 import Loader from '../Loader';
 import './Header.css';
@@ -14,7 +14,7 @@ const Header = () => {
   useEffect(() => {
     const loadMenuItems = async () => {
       try {
-        const items = await fetchMenuItems();
+        const items = await fetchMenuItemsHeader();
         setMenuItems(items);
       } catch (error) {
         console.error('Error loading menu items:', error);
@@ -70,7 +70,7 @@ const Header = () => {
                     {menuItems.map((item) => (
                       <li key={item.id}>
                         <Link 
-                          to={cleanUrl(item.url)} 
+                          to={cleanUrl(item.object_slug)} 
                           className="nav-link"
                         >
                           {item.title}

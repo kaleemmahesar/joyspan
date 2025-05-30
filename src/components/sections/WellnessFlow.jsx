@@ -26,7 +26,7 @@ import axios from '../../utils/axios';
 import { jsPDF } from 'jspdf';
 import Loader from '../Loader';
 import './WellnessFlow.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const steps = ['How are you feeling?', 'Choose an activity', 'Your personalized plan', 'Complete'];
 
@@ -58,7 +58,11 @@ const WellnessFlow = ({
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+
+    
+
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         const userResponse = await axios.get('/wp/v2/users/me');
@@ -116,101 +120,7 @@ const WellnessFlow = ({
     return feelingData ? feelingData.description : "We've selected activities that will help you improve your overall well-being and find balance in your life.";
   };
 
-  // Comment out PDF generation function
-  /*
-  const generatePDF = async (values) => {
-    try {
-      const feelingOption = feelingOptions.find(opt => opt.value === values.feeling);
-      const doc = new jsPDF();
-      doc.setFont('helvetica');
-      doc.setFillColor(10, 165, 197);
-      doc.rect(0, 0, 210, 40, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(24);
-      doc.setFont('helvetica', 'bold');
-      doc.text(title, 105, 25, { align: 'center' });
-      doc.setTextColor(0, 0, 0);
-
-      doc.setFontSize(18);
-      doc.setFont('helvetica', 'bold');
-      doc.text('How are you feeling:', 20, 60);
-      doc.setFontSize(14);
-      doc.setFont('helvetica', 'normal');
-      doc.text(feelingOption ? feelingOption.label : values.feeling, 30, 70);
-
-      doc.setFontSize(12);
-      const feelingDescription = getFeelingBasedDescription(values.feeling);
-      const splitDescription = doc.splitTextToSize(feelingDescription, 170);
-      doc.text(splitDescription, 20, 85);
-
-      doc.setDrawColor(200, 200, 200);
-      doc.line(20, 110, 190, 110);
-
-      doc.setFontSize(18);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Your Selected Activity:', 20, 130);
-      doc.setFontSize(14);
-      doc.setFont('helvetica', 'normal');
-      doc.text(values.activity, 30, 140);
-
-      const activityDescription = activityDescriptions[values.activity];
-      const splitActivityDesc = doc.splitTextToSize(activityDescription, 170);
-      doc.setFontSize(12);
-      doc.text(splitActivityDesc, 20, 155);
-
-      doc.line(20, 180, 190, 180);
-
-      doc.setFontSize(18);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Practice Tips:', 20, 200);
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'normal');
-
-      const practiceTips = [
-        '• Practice this activity daily for best results',
-        '• Find a quiet, comfortable space',
-        '• Set aside 10-15 minutes for your practice',
-        '• Be patient with yourself and celebrate small progress',
-        '• Track your progress in a journal if helpful'
-      ];
-      practiceTips.forEach((tip, i) => {
-        doc.text(tip, 30, 210 + i * 10);
-      });
-
-      doc.setFontSize(10);
-      doc.setTextColor(100, 100, 100);
-      doc.text('Generated on: ' + new Date().toLocaleDateString(), 20, 280);
-      doc.setFontSize(8);
-      doc.text('Created with JoySpan', 105, 285, { align: 'center' });
-
-      const pdfBlob = doc.output('blob');
-      const formData = new FormData();
-      formData.append('pdf', pdfBlob, 'wellness-plan.pdf');
-
-      try {
-        const response = await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          withCredentials: true
-        });
-
-        if (response.data?.success && response.data.url) {
-          setPdfUrl(response.data.url);
-          return response.data.url;
-        }
-      } catch (uploadError) {
-        console.warn('PDF upload failed, but continuing with wellness data save:', uploadError);
-        // Continue with the process even if PDF upload fails
-        return null;
-      }
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      return null;
-    }
-  };
-  */
+  
 
   const handleNext = (values, { setTouched }) => {
     console.log('Current step:', activeStep);
@@ -237,6 +147,8 @@ const WellnessFlow = ({
       return prev + 1;
     });
   };
+
+  
 
   const handleBack = () => {
     setActiveStep(prev => prev - 1);
@@ -383,9 +295,19 @@ const WellnessFlow = ({
             <Typography variant="h6" className="success-subtitle">Thanks for completing the exercise</Typography>
             <Typography variant="h6" className="success-subtitle">When you feel ready, try another exercise.</Typography>
             {isCompleted && (
+              <>
             <Typography variant="body2" color="textSecondary" sx={{ mt: 1, mb: 2 }}>
               Your activity has been saved to your wellness history
             </Typography>
+            <Button 
+              className='mb-3'
+              variant="contained" 
+              color="warning" 
+              onClick={() => {
+            setActiveStep(0);
+          }} // Replace with your actual handler
+            >Start Over Journey</Button>
+            </>
             )}
             {values.activity && activityPdfUrls[values.activity] && (
               <Box className="action-buttons">
@@ -398,14 +320,14 @@ const WellnessFlow = ({
                 >
                   Download Activity PDF
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   onClick={() => handleSendEmail(values)}
                   disabled={isSendingEmail}
                   className="email-button"
                 >
                   {isSendingEmail ? 'Sending...' : 'Send PDF to My Email'}
-                </Button>
+                </Button> */}
                 {userEmail && (
                   <Typography variant="body2" className="email-text">
                     You'll receive a PDF of the instructions at <b>{userEmail}</b>
@@ -437,7 +359,7 @@ const WellnessFlow = ({
               validationSchema={validationSchema} 
               onSubmit={handleSubmit}
             >
-              {({ values, setFieldValue, setTouched, errors, touched }) => (
+              {({ values, setFieldValue, setTouched, errors, touched  }) => (
                 <Form>
                   
                   {activeStep !== 3 && (

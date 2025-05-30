@@ -322,8 +322,47 @@ section {
 .me-button-contained:hover {
   background-color: #0994B2;
 }
-
-/* Responsive adjustments */
+.pages-wrapper {
+  padding: 50px 0;
+}
+.pages-wrapper p {
+  color: #071846;
+}
+.pages-wrapper h1 {
+  color : #EA6C1D;
+  font-size: 36px;
+  font-family: 'lato';
+  font-weight: 900;
+}
+.pages-wrapper h2 {
+  color : #EA6C1D;
+  font-size: 30px;
+  font-family: 'lato';
+  font-weight: 800;
+  color: #071846;
+}
+.pages-wrapper h3 {
+  color : #EA6C1D;
+  font-size: 26px;
+  font-family: 'lato';
+  font-weight: 700;
+}
+.pages-wrapper h4 {
+  color : #EA6C1D;
+  font-size: 22px;
+  font-family: 'lato';
+  font-weight: 600;
+}
+.pages-wrapper h5 {
+  color : #EA6C1D;
+  font-size: 18px;
+}
+.pages-wrapper h6 {
+  color: #071846;
+  font-size: 16px;
+}
+/*
+ Responsive adjustments */
 @media (max-width: 992px) {
   h1 {
     font-size: 2.5rem;
@@ -347,7 +386,8 @@ section {
     height: 65px;
   }
   footer .nav-link {
-    padding: 8px;
+    padding: 6px;
+    font-size: 13px;
   }
 }
 

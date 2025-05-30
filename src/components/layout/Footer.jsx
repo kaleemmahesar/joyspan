@@ -1,41 +1,74 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   RiFacebookCircleFill,
   RiTwitterXFill,
   RiInstagramFill,
   RiLinkedinBoxFill
 } from 'react-icons/ri';
+import Loader from '../Loader';
+import { fetchMenuItemsFooter } from '../../utils/menuApi';
 
 const Footer = () => {
+  const [menuItems, setMenuItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+      const loadMenuItems = async () => {
+        try {
+          const items = await fetchMenuItemsFooter();
+          setMenuItems(items);
+        } catch (error) {
+          console.error('Error loading menu items:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      loadMenuItems();
+    }, []);
+  
+    // Function to clean URL for React Router
+    const cleanUrl = (url) => {
+      try {
+        const urlObj = new URL(url);
+        return urlObj.pathname;
+      } catch (error) {
+        return url;
+      }
+    };
   return (
     <footer className="bg-light py-5 mt-auto">
       <div className="container">
         <div className="row align-items-center mb-4">
-          <div className="col-md-4 text-center text-md-start">
+          <div className="col-md-3 text-center text-md-start">
             <Link to="/">
               <img src="/logo.png" alt="JoySpan Logo" className="h-40" />
             </Link>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <nav className="d-flex justify-content-center">
-              <ul className="nav">
-                <li className="nav-item">
-                  <Link to="/me" className="nav-link text-dark">ME</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/you" className="nav-link text-dark">You</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/us" className="nav-link text-dark">Us</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/support" className="nav-link text-dark">Support</Link>
-                </li>
-              </ul>
+              {loading ? (
+                  <Loader size="small" color="primary" />
+                ) : (
+                  <ul className="nav">
+                    {menuItems.map((item) => (
+                      <li key={item.id} className="nav-item">
+                        <Link 
+                          to={cleanUrl(item.object_slug)} 
+                          className="nav-link text-dark"
+                          dangerouslySetInnerHTML={{ __html: item.title }}
+                        >
+                          
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
             </nav>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <div className="d-flex justify-content-center justify-content-md-end gap-3">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
                 <RiFacebookCircleFill />

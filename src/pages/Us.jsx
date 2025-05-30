@@ -5,6 +5,7 @@ import './Me.css';
 const Us = () => {
   return (
     <WellnessFlow
+    key={location.key}
       feelingCategoryId={11} // Existing feeling category
       activityCategoryId={12} // Existing activity category
       feelingPostType="feelings"

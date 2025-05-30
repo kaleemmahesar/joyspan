@@ -1,35 +1,38 @@
-import React from 'react';
-import TextImageSection from '../components/sections/TextImageSection';
-import TextImageVertical from '../components/sections/TextImageVertical';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Loader from '../components/Loader';
 
 const About = () => {
+  const [pageContent, setPageContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost/joyspan-server/wp-json/wp/v2/pages?slug=about')
+      .then((res) => {
+        if (res.data.length > 0) {
+          setPageContent(res.data[0]);
+          console.log('Page content fetched:', res.data[0]);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch page content:', err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <Loader />;
+
   return (
-    <main>
+    <main className='page-wrapper'>
       <div className="container">
-        <TextImageSection
-          title="About Joyspan"
-          text="Founded in 2024, Joyspan has quickly established itself as a leader in technology solutions. Our team combines expertise with innovation to deliver exceptional results for our clients."
-          imageSrc="/images/about.jpg"
-          imageAlt="About Joyspan"
-        />
-        
-        <TextImageVertical
-          title="Our Team"
-          text="Our diverse team of professionals brings together expertise from various domains, creating a powerhouse of talent dedicated to delivering excellence in every project."
-          imageSrc="/images/team.jpg"
-          imageAlt="Our Team"
-        />
-        
-        <TextImageSection
-          title="Our Values"
-          text="We believe in innovation, integrity, and excellence. These core values guide everything we do, from how we work with clients to how we develop solutions."
-          imageSrc="/images/values.jpg"
-          imageAlt="Our Values"
-          reverse={true}
-        />
+        <h2 dangerouslySetInnerHTML={{ __html: pageContent?.title?.rendered }} />
+        <div dangerouslySetInnerHTML={{ __html: pageContent?.content?.rendered }} />
       </div>
     </main>
   );
 };
 
-export default About; 
+export default About;

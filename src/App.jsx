@@ -14,6 +14,8 @@ import './styles/style.css';
 import You from './pages/You';
 import Us from './pages/Us';
 import Profile from './pages/Profile';
+import About from './pages/About';
+import DynamicPage from './pages/DynamicPage';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -68,9 +70,10 @@ const AppRoutes = () => {
         }
       />
       <Route path="/callback" element={<div>Loading...</div>} />
-      <Route path="/" element={<Home />} />
+      
       <Route path="/support" element={<Home />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/:slug" element={<DynamicPage />} />
     </Routes>
   );
 };
