@@ -173,10 +173,34 @@
 }
 .me-content .me-heading {
   text-align: left;
-  font-size: 28px;
+  font-size: 25px;
   color: rgba(7, 24, 70, 1);  
+}
+.me-content .me-heading i,
+.me-content .me-heading b {
+  font-weight: 800;
+  font-style: normal;
+  font-family: "Lato", sans-serif;
 }
 .me-content .me-text {
   color: rgba(7, 24, 70, 1);
   font-size: 18px;
+}
+.success-container :is(h4, h6, p, .MuiButtonBase-root) {
+  font-family: "Lato", sans-serif;
+}
+.success-container :is(.MuiButtonBase-root) {
+  font-weight: bold;
+}
+.success-container :is(.email-text) b{
+  font-weight: 600;
+  color: #EA6C1D;
+}
+.form-wrapper {
+  width: 100%;
+}
+.content-wrapper :is(.MuiButtonBase-root) {
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  box-shadow: none;
 }

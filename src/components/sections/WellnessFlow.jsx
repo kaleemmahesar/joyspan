@@ -324,12 +324,12 @@ const WellnessFlow = ({
       case 1: {
         const feelingOption = feelingOptions.find(opt => opt.value === values?.feeling);
         const feelingLabel = feelingOption ? feelingOption.label : '';
-        return `<b>${sectionName}</b> - Choose an activity for ${feelingLabel}`;
+        return `<b>${sectionName}</b> - Choose an activity for <i>${feelingLabel}</i>`;
       }
       case 2: {
         const feelingOption = feelingOptions.find(opt => opt.value === values?.feeling);
         const feelingLabel = feelingOption ? feelingOption.label : '';
-        return `<b>${sectionName}</b> - Your plan for ${feelingLabel} with ${values?.activity || ''}`;
+        return `<b>${sectionName}</b> - Your plan for <i>${feelingLabel}</i> with <i>${values?.activity || ''}</i>`;
       }
       default: 
         return "";
@@ -408,7 +408,7 @@ const WellnessFlow = ({
                 </Button>
                 {userEmail && (
                   <Typography variant="body2" className="email-text">
-                    You'll receive a PDF of the instructions at {userEmail}
+                    You'll receive a PDF of the instructions at <b>{userEmail}</b>
                   </Typography>
                 )}
               </Box>
@@ -431,7 +431,7 @@ const WellnessFlow = ({
     <div className={`me-content step-${activeStep + 1}`}>
       <div className="container">
         <Container maxWidth={false}>
-          <Paper elevation={0} sx={{ position: 'relative', zIndex: 1 }}>
+          <Paper elevation={0} sx={{ position: 'relative', zIndex: 1 }} className='form-wrapper'>
             <Formik 
               initialValues={initialValues} 
               validationSchema={validationSchema} 

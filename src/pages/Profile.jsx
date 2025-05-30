@@ -82,17 +82,8 @@ const Profile = () => {
           <div className="profile-header">
             <div className='row'>
               <div className='col-md-12'>
-            <div className="profile-cover">
-              <div className="profile-avatar-container">
-                <img
-                  src="/profile.jpg"
-                  alt={profileData.name}
-                  className="profile-avatar rounded-circle"
-                />
-              </div>
-            </div>
             <div className="profile-info">
-              <h4 className="mb-1">{profileData.name}</h4>
+              <h4 className="mb-1 text-capitalize">{profileData.name}</h4>
               <p className="text-muted mb-3">
                 {profileData.profession || 'No profession specified'}
               </p>

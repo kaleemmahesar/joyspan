@@ -264,7 +264,6 @@ section {
   border-radius: 10px;
   padding: 5px;
   margin: 0;
-  font-family: 'Inter';
   color: #071846;
 }
 
@@ -325,7 +324,7 @@ section {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   h1 {
     font-size: 2.5rem;
   }
@@ -337,6 +336,19 @@ section {
   .me-form-control {
     padding: 1rem;
   }
+  .video-banner-section h4{
+    font-size: 1.25rem;
+  }
+  .video-banner-section h1 {
+    font-size: 2rem;
+  }
+  .video-banner-section .position-absolute {
+    width: 65px;
+    height: 65px;
+  }
+  footer .nav-link {
+    padding: 8px;
+  }
 }
 
 
@@ -347,4 +359,10 @@ section {
 
 .user-logged-in .top-header {
     display: none;
+}
+
+@media (max-width: 1100px) {
+  .content-wrapper {
+    min-width: 100%;
+  }
 }

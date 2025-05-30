@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TextImageSection from '../components/sections/TextImageSection';
 import TabsSection from '../components/sections/TabsSection';
-import TextImageVertical from '../components/sections/TextImageVertical';
 import HeroSection from '../components/sections/HeroSection';
 import { fetchTabsData } from '../utils/tabsApi';
 
@@ -85,7 +83,7 @@ const Home = () => {
         />
       )}
 
-      <section className="bg-light py-5">
+      <section className="bg-light py-5 video-banner-section">
         <div className="container">
           <h4 className="text-center mb-3">
             Welcome to proven methods for <span className="text-primary">well-being and satisfaction</span>

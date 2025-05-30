@@ -101,7 +101,7 @@
   height: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .hero-section {
     padding: var(--spacing-lg) 0;
   }
@@ -117,9 +117,15 @@
   }
 
   .hero-section .hero-content h1 {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem !important;
   }
-
+  .hero-section h2 {
+    font-size: 1.35rem;
+  }
+  .hero-section .lead {
+    font-size: 1rem;
+  }
   .hero-section .hero-content .subtitle {
     font-size: 1.25rem;
   }
