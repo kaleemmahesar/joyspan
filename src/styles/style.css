@@ -406,3 +406,13 @@ section {
     min-width: 100%;
   }
 }
+
+@media (max-width: 768px) {
+  .video-banner-section h1 {
+    font-size: 1.65rem;
+  }
+  .video-banner-section h4 {
+    font-size: 1rem;
+  }
+  
+}

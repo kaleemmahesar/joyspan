@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import TabsSection from '../components/sections/TabsSection';
 import HeroSection from '../components/sections/HeroSection';
 import { fetchTabsData } from '../utils/tabsApi';
+import axios from 'axios';
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [tabs, setTabs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [herosection, setHeroSection] = useState('');
 
   const decodeHtmlEntities = (text) => {
     const textarea = document.createElement('textarea');
@@ -64,6 +66,18 @@ const Home = () => {
     };
 
     loadTabsData();
+
+    const fetchThemeOptions = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/wp-json/custom/v1/options`);
+        setHeroSection(res.data.home_hero_section);
+        console.log(herosection)
+      } catch (err) {
+        console.error('Error fetching site logo:', err);
+      }
+    };
+
+  fetchThemeOptions();
   }, []);
 
   const handlePlayClick = () => setShowModal(true);
@@ -71,7 +85,7 @@ const Home = () => {
 
   return (
     <main>
-      <HeroSection />
+      <HeroSection herosection={herosection} />
       {loading ? (
         <div className="container text-center py-5">
           <div className="loading">Loading...</div>

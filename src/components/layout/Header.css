@@ -151,6 +151,110 @@
   color: #c5530d;
 }
 
+.menu-toggle {
+  display: none;
+  font-size: 23px;
+  margin-left: 16px;
+  background: none;
+  border: none;
+  color: #071846;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+  padding: 0;
+}
+
+.menu-toggle i {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-toggle.open i {
+  transform: rotate(180deg);
+  color: #0AA5C5;
+}
+
+.mobile-menu {
+  display: flex;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: inline-block;
+  }
+  .logo-area {
+    display: flex;
+    justify-content: space-between;
+    flex: unset !important;
+    width: 100% !important;
+    position: relative;
+    z-index: 1;
+  }
+  .main-nav-wrapper {
+    width: 100%;
+    flex-direction: column;
+    display: none;
+    align-items: flex-start;
+  }
+
+  .main-nav {
+    width: 100%;
+    margin-top: 12px;
+  }
+  .header-buttons {
+    display: none;
+  }
+  .mobile-menu.open {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #e6fbff;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 100px 15px 15px;
+  }
+  .mobile-menu.open .main-nav-wrapper {
+    display: block;
+  }
+
+  .mobile-menu.open .header-buttons {
+    display: flex;
+    flex: unset;
+    width: 100%;
+    padding: 0 15px;
+  }
+  .mobile-menu.open .header-buttons > .d-flex {
+    justify-content: space-between;
+  }
+  .mobile-menu.open .flex {
+    flex: unset !important;
+  }
+  .main-header .col {
+    flex: unset;
+  }
+  .nav-list {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 10px 0;
+  }
+
+  .header-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+  }
+}
+
+
 @media (max-width: 768px) {
   .top-header .welcome-text {
     font-size: 18px;
@@ -173,8 +277,16 @@
     font-size: 12px;
     min-width: 70px;
   }
-
-  .user-name {
+  footer p {
     font-size: 12px;
   }
 } 
+@media (max-width: 460px) {
+  .top-header .welcome-text {
+    font-size: 14px;
+  }
+  .top-header .join-us-btn {
+    min-width: 94px;
+    font-size: 14px;
+  }
+}

@@ -1,10 +1,11 @@
 import React from 'react';
 import './HeroSection.css';
 
-const HeroSection = () => {
+const HeroSection = ({herosection}) => {
   return (
     <section className="hero-section py-5">
-      <div className="container">
+      {/* <div className="container" dangerouslySetInnerHTML={{ __html: herosection }} > */}
+        <div className="container">
         <div className="row align-items-center">
           <div className="col-lg-6">
             <div className="hero-content">

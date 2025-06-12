@@ -229,3 +229,28 @@
 .MuiMenu-list {
   background-color: #fff;
 }
+@media (max-width: 992px) {
+  .MuiContainer-root {
+    padding-top: 60px;
+  }
+  .content-wrapper {
+    padding: 2rem;
+  }
+}
+@media (max-width: 460px) {
+  .MuiContainer-root {
+    padding-top: 60px;
+  }
+  .content-wrapper {
+    padding: 1rem;
+  }
+  .me-form-label .MuiFormControlLabel-label {
+    font-size: 13px;
+  }
+  .me-content .me-heading {
+    font-size: 18px;
+  }
+  .me-content .me-text {
+    font-size: 16px;
+  }
+}

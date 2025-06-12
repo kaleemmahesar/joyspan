@@ -9,6 +9,10 @@ const Profile = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+
   const [profileData, setProfileData] = useState({
     name: '',
     email: '',
@@ -25,19 +29,13 @@ const Profile = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
-        
-        if (!token) {
-          throw new Error('No authentication token found');
-        }
+        if (!token) throw new Error('No authentication token found');
 
         const response = await axios.get('/wp/v2/users/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` }
         });
 
         const userData = response.data;
-        
         setProfileData({
           name: userData.name || '',
           email: userData.email || userData.user_email || '',
@@ -49,6 +47,7 @@ const Profile = () => {
           avatar: userData.avatar_urls?.['96'] || ''
         });
 
+        setNewEmail(userData.email || '');
       } catch (err) {
         console.error('Error fetching user profile:', err);
         setError('Failed to load profile data. Please try logging in again.');
@@ -60,14 +59,35 @@ const Profile = () => {
     fetchUserProfile();
   }, []);
 
+  const handleEmailChange = (e) => setNewEmail(e.target.value);
+
+  const handleEmailUpdate = async () => {
+    try {
+      setError('');
+      setSuccessMsg('');
+      const token = localStorage.getItem('token');
+
+      const response = await axios.post(
+        '/custom/v1/change-email',
+        { email: newEmail },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setProfileData((prev) => ({ ...prev, email: newEmail }));
+      setSuccessMsg('Email updated successfully');
+      setIsEditingEmail(false);
+    } catch (err) {
+      console.error('Error updating email:', err);
+      setError(err?.response?.data?.message || 'Failed to update email');
+    }
+  };
+
   if (loading) {
     return (
       <div className="profile-background">
-        <div className="container">
-          <div className="d-flex justify-content-center py-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
+        <div className="container text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
         </div>
       </div>
@@ -76,63 +96,73 @@ const Profile = () => {
 
   return (
     <div className="profile-background">
-      <div className="container">
-        <div className="main-body">
-          {/* Profile Header */}
-          <div className="profile-header">
-            <div className='row'>
-              <div className='col-md-12'>
-            <div className="profile-info">
-              <h4 className="mb-1 text-capitalize">{profileData.name}</h4>
-              <p className="text-muted mb-3">
-                {profileData.profession || 'No profession specified'}
-              </p>
-              <div className="profile-card-body">
-                  <div className="contact-info-item">
-                    <i className="fas fa-envelope me-2"></i>
-                    <span>{profileData.email}</span>
-                  </div>
-                  <div className="contact-info-item">
-                    <i className="fas fa-phone me-2"></i>
-                    <span>{profileData.phone || 'Not provided'}</span>
-                  </div>
-                  <div className="contact-info-item">
-                    <i className="fas fa-building me-2"></i>
-                    <span>{profileData.organization || 'Not provided'}</span>
-                  </div>
-                  <div className="contact-info-item">
-                    <i className="fas fa-map-marker-alt me-2"></i>
-                    <span>{profileData.country || 'Not provided'}</span>
-                  </div>
-                </div>
-            </div>
-            </div>
-            
-            </div>
-          </div>
-
-          <div className="row">
-            {/* Right Column - Wellness History */}
-            <div className="col-md-12">
-              <div className="card">
-                <div className="card-body p-4">
-                  {error && (
-                    <div className="alert alert-danger" role="alert">
-                      <i className="fas fa-exclamation-circle me-2"></i>
-                      {error}
-                    </div>
-                  )}
-
-                  <div>
-                    <h6 className="card-title mb-3">
-                      <i className="fas fa-history me-2"></i>
-                      Wellness History
-                    </h6>
-                    <WellnessHistory />
-                  </div>
-                </div>
+      <div className="container py-5">
+        <div className="card profile-card shadow-sm">
+          <div className="card-body">
+            <div className="d-flex align-items-center mb-4">
+              <img
+                src={profileData.avatar}
+                alt="Avatar"
+                className="rounded-circle me-3"
+                width="80"
+                height="80"
+              />
+              <div>
+                <h4 className="mb-0 text-capitalize">{profileData.name}</h4>
               </div>
             </div>
+
+            <div className="info-section">
+              {/* Email Field */}
+              <div className="info-item d-flex justify-content-between align-items-center">
+                <div>
+                  <i className="fas fa-envelope me-2 text-primary" />
+                  {isEditingEmail ? (
+                    <input
+                      type="email"
+                      className="form-control d-inline-block w-auto"
+                      value={newEmail}
+                      onChange={handleEmailChange}
+                    />
+                  ) : (
+                    <span className="text-muted">{profileData.email}</span>
+                  )}
+                </div>
+                <div>
+                  {isEditingEmail ? (
+                    <>
+                      <button className="btn btn-sm btn-success me-2" onClick={handleEmailUpdate}>
+                        Save
+                      </button>
+                      <button className="btn btn-sm btn-outline-secondary" onClick={() => setIsEditingEmail(false)}>
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <button className="btn btn-sm btn-outline-primary" onClick={() => setIsEditingEmail(true)}>
+                      Edit
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Other Info */}
+
+              {/* Feedback */}
+              {error && <div className="alert alert-danger mt-3">{error}</div>}
+              {successMsg && <div className="alert alert-success mt-3">{successMsg}</div>}
+            </div>
+          </div>
+        </div>
+
+        {/* Wellness History */}
+        <div className="card mt-4">
+          <div className="card-body">
+            <h5 className="card-title mb-3">
+              <i className="fas fa-history me-2"></i>
+              Wellness History
+            </h5>
+            <WellnessHistory />
           </div>
         </div>
       </div>
@@ -140,4 +170,4 @@ const Profile = () => {
   );
 };
 
-export default Profile; 
+export default Profile;

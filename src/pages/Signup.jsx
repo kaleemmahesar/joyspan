@@ -232,18 +232,14 @@
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
       .required('Confirm password is required'),
-    profession: Yup.string()
-      .required('Profession is required'),
-    phone: Yup.string()
-      .required('Phone number is required')
-      .matches(
-        /^\+?[\d\s-]{10,}$/,
-        'Please enter a valid phone number'
-      ),
-    organization: Yup.string()
-      .required('Organization is required'),
+    // profession: Yup.string().required('Profession is required'),
+    // phone: Yup.string().required('Phone number is required').matches(/^\+?[\d\s-]{10,}$/,'Please enter a valid phone number'),
+    // organization: Yup.string().required('Organization is required'),
     country: Yup.string()
-      .required('Country is required')
+      .required('Full name is required')
+      .min(2, 'Full name must be at least 2 characters')
+      .max(100, 'Full name cannot exceed 100 characters')
+      .matches(/^[a-zA-Z\s]+$/, 'Full name can only contain letters and spaces')
   });
 
   const SignUp = () => {
@@ -261,9 +257,9 @@
           username: values.username,
           email: values.email,
           password: values.password,
-          profession: values.profession,
-          phone: values.phone,
-          organization: values.organization,
+          // fullname: values.fullname,
+          // phone: values.phone,
+          // organization: values.organization,
           country: values.country
         };
   
@@ -333,9 +329,6 @@
               email: '',
               password: '',
               confirmPassword: '',
-              profession: '',
-              phone: '',
-              organization: '',
               country: ''
             }}
             validationSchema={signupSchema}
@@ -395,18 +388,18 @@
                   </div>
                 </div>
                 <div className="form-row">
-                  <div className="form-field">
-                    <label>Profession</label>
+                  {/* <div className="form-field">
+                    <label>Full Name</label>
                     <Field
                       as={TextField}
-                      name="profession"
+                      name="fullname"
                       select
                       fullWidth
-                      error={touched.profession && Boolean(errors.profession)}
-                      helperText={touched.profession && errors.profession}
+                      error={touched.fullname && Boolean(errors.fullname)}
+                      helperText={touched.fullname && errors.fullname}
                       SelectProps={{
                         displayEmpty: true,
-                        renderValue: (value) => value || 'Select your profession'
+                        renderValue: (value) => value || 'Enter Your Full Name'
                       }}
                     >
                       <MenuItem value="" disabled>
@@ -418,20 +411,20 @@
                         </MenuItem>
                       ))}
                     </Field>
-                  </div>
+                  </div> */}
                   <div className="form-field">
-                    <label>Phone Number</label>
+                    <label>Full Name</label>
                     <Field
                       as={TextField}
-                      name="phone"
-                      placeholder="+1-212-456-7890"
+                      name="country"
+                      placeholder="Full Name"
                       fullWidth
-                      error={touched.phone && Boolean(errors.phone)}
-                      helperText={touched.phone && errors.phone}
+                      error={touched.country && Boolean(errors.country)}
+                      helperText={touched.country && errors.country}
                     />
                   </div>
                 </div>
-                <div className="form-row">
+                {/* <div className="form-row">
                   <div className="form-field">
                     <label>Organization</label>
                     <Field
@@ -491,7 +484,7 @@
                       )}
                     </Field>
                   </div>
-                </div>
+                </div> */}
                 <div className="form-buttons">
                   <Button
                     type="submit"

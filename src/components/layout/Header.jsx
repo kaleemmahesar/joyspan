@@ -4,10 +4,14 @@ import { fetchMenuItemsHeader } from '../../utils/menuApi';
 import { useAuth } from '../../utils/AuthContext';
 import Loader from '../Loader';
 import './Header.css';
+import axios from 'axios';
 
 const Header = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [logoUrl, setLogoUrl] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -24,9 +28,19 @@ const Header = () => {
     };
 
     loadMenuItems();
+
+    const fetchLogo = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/wp-json/custom/v1/options`);
+        setLogoUrl(res.data.site_logo);
+      } catch (err) {
+        console.error('Error fetching site logo:', err);
+      }
+    };
+
+    fetchLogo();
   }, []);
 
-  // Function to clean URL for React Router
   const cleanUrl = (url) => {
     try {
       const urlObj = new URL(url);
@@ -41,9 +55,11 @@ const Header = () => {
     navigate('/');
   };
 
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
     <header className="header">
-      <div className="top-header">
+      <div className={`top-header ${isMenuOpen ? 'hidden' : ''}`}>
         <div className="container">
           <div className="d-flex justify-content-center gap-4 align-items-center p-2">
             <p className="welcome-text">Find exercises that can help you, your patients and your team</p>
@@ -56,33 +72,41 @@ const Header = () => {
       <div className="main-header">
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-auto">
+            <div className="col-auto d-flex align-items-center logo-area">
               <Link to="/" className="logo">
-                <img src="/logo.png" alt="JoySpan" />
+                <img src={logoUrl} alt="JoySpan" />
               </Link>
+              <button 
+  className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}
+  onClick={toggleMenu}
+  aria-label="Toggle navigation"
+>
+  <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+</button>
             </div>
-            <div className="col">
-              <nav className="main-nav">
-                {loading ? (
-                  <Loader size="small" color="primary" />
-                ) : (
-                  <ul className="nav-list">
-                    {menuItems.map((item) => (
-                      <li key={item.id}>
-                        <Link 
-                          to={cleanUrl(item.object_slug)} 
-                          className="nav-link"
-                        >
-                          {item.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </nav>
-            </div>
-            <div className="col-auto">
-              <div className="header-buttons">
+            <div className={`col mobile-menu ${isMenuOpen ? 'open' : ''}`}>
+              <div className={`col main-nav-wrapper`}>
+                <nav className="main-nav">
+                  {loading ? (
+                    <Loader size="small" color="primary" />
+                  ) : (
+                    <ul className="nav-list">
+                      {menuItems.map((item) => (
+                        <li key={item.id}>
+                          <Link 
+                            to={cleanUrl(item.object_slug)} 
+                            className="nav-link"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {item.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </nav>
+              </div>
+              <div className={`col-auto header-buttons`}>
                 {user ? (
                   <div className="d-flex align-items-center gap-3">
                     <div className="user-info">
@@ -91,12 +115,7 @@ const Header = () => {
                     <button 
                       className="btn btn-outline" 
                       onClick={handleLogout}
-                      style={{ 
-                        height: '38px',
-                        padding: '0 20px',
-                        fontSize: '14px',
-                        fontWeight: '500'
-                      }}
+                      style={{ height: '38px', padding: '0 20px', fontSize: '14px', fontWeight: '500' }}
                     >
                       Sign Out
                     </button>

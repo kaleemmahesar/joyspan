@@ -16,6 +16,7 @@ import Us from './pages/Us';
 import Profile from './pages/Profile';
 import About from './pages/About';
 import DynamicPage from './pages/DynamicPage';
+import CookieConsent from './components/sections/CookieConsent';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -71,7 +72,7 @@ const AppRoutes = () => {
       />
       <Route path="/callback" element={<div>Loading...</div>} />
       
-      <Route path="/support" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/:slug" element={<DynamicPage />} />
     </Routes>
@@ -110,6 +111,7 @@ const App = () => {
             <Header />
             <main className="flex-grow-1">
               <AppRoutes />
+              <CookieConsent />
             </main>
             <Footer />
           </div>
