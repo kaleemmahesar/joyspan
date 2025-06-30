@@ -4,9 +4,9 @@ import './HeroSection.css';
 const HeroSection = ({herosection}) => {
   return (
     <section className="hero-section py-5">
-      {/* <div className="container" dangerouslySetInnerHTML={{ __html: herosection }} > */}
-        <div className="container">
-        <div className="row align-items-center">
+      <div className="container" dangerouslySetInnerHTML={{ __html: herosection }} >
+        {/* <div className="container"> */}
+        {/* <div className="row align-items-center">
           <div className="col-lg-6">
             <div className="hero-content">
               <h1 className="display-4 mb-4">Toolkit uniquely brings together</h1>
@@ -23,12 +23,12 @@ const HeroSection = ({herosection}) => {
               <img src="/imagesection1.png" alt="Joyful Living" className="img-fluid" />
             </div>
           </div>
-        </div>
-        <div className="row">
+        </div> */}
+        {/* <div className="row">
           <div className="col-lg-12">
             <h2>Choose a situation that applies to you or that interests you</h2>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

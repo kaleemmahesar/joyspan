@@ -233,7 +233,7 @@
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
       .required('Confirm password is required'),
     // profession: Yup.string().required('Profession is required'),
-    // phone: Yup.string().required('Phone number is required').matches(/^\+?[\d\s-]{10,}$/,'Please enter a valid phone number'),
+      phone: Yup.string().required('Phone number is required').matches(/^\+?[\d\s-]{10,}$/,'Please enter a valid phone number'),
     // organization: Yup.string().required('Organization is required'),
     country: Yup.string()
       .required('Full name is required')
@@ -258,7 +258,7 @@
           email: values.email,
           password: values.password,
           // fullname: values.fullname,
-          // phone: values.phone,
+          phone: values.phone,
           // organization: values.organization,
           country: values.country
         };
@@ -338,16 +338,17 @@
               <Form className="login-form">
                 <div className="form-row">
                   <div className="form-field">
-                    <label>Username</label>
+                    <label>Full Name</label>
                     <Field
                       as={TextField}
-                      name="username"
-                      placeholder="Choose a username"
+                      name="country"
+                      placeholder="Full Name"
                       fullWidth
-                      error={touched.username && Boolean(errors.username)}
-                      helperText={touched.username && errors.username}
+                      error={touched.country && Boolean(errors.country)}
+                      helperText={touched.country && errors.country}
                     />
                   </div>
+                  
                   <div className="form-field">
                     <label>Email</label>
                     <Field
@@ -360,6 +361,40 @@
                       helperText={touched.email && errors.email}
                     />
                   </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-field">
+                    <label>Username</label>
+                    <Field
+                      as={TextField}
+                      name="username"
+                      placeholder="Choose a username"
+                      fullWidth
+                      error={touched.username && Boolean(errors.username)}
+                      helperText={touched.username && errors.username}
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label>Mobile Number</label>
+                    <Field
+                      as={TextField}
+                      name="phone"
+                      fullWidth
+                      error={touched.phone && Boolean(errors.phone)}
+                      helperText={touched.phone && errors.phone}
+                      placeholder="+1 234 567 8900"
+                    >
+                      <MenuItem value="" disabled>
+                        Select your profession
+                      </MenuItem>
+                      {professions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Field>
+                  </div>
+                  
                 </div>
                 <div className="form-row">
                   <div className="form-field">
@@ -386,43 +421,7 @@
                       helperText={touched.confirmPassword && errors.confirmPassword}
                     />
                   </div>
-                </div>
-                <div className="form-row">
-                  {/* <div className="form-field">
-                    <label>Full Name</label>
-                    <Field
-                      as={TextField}
-                      name="fullname"
-                      select
-                      fullWidth
-                      error={touched.fullname && Boolean(errors.fullname)}
-                      helperText={touched.fullname && errors.fullname}
-                      SelectProps={{
-                        displayEmpty: true,
-                        renderValue: (value) => value || 'Enter Your Full Name'
-                      }}
-                    >
-                      <MenuItem value="" disabled>
-                        Select your profession
-                      </MenuItem>
-                      {professions.map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Field>
-                  </div> */}
-                  <div className="form-field">
-                    <label>Full Name</label>
-                    <Field
-                      as={TextField}
-                      name="country"
-                      placeholder="Full Name"
-                      fullWidth
-                      error={touched.country && Boolean(errors.country)}
-                      helperText={touched.country && errors.country}
-                    />
-                  </div>
+                  
                 </div>
                 {/* <div className="form-row">
                   <div className="form-field">
