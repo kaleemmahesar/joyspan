@@ -1,15 +1,15 @@
 /* Variables */
 :root {
-  --color-action: #EA6C1D;
+  --color-action: #F2CE00;
   --color-icon: #CFF6F9;
   --color-text: #AE4141;
-  --dark-blue-color: #0AA5C5;
+  --dark-blue-color: #047051;
   --white-color: #FFFFFF;
-  --black-color: #071846;
+  --black-color: #00140f;
   --bg-primary: #EEEEEE;
   --bg-secondary: #CFD5E6;
   --gradient-start: #F3F8F91A;
-  --gradient-end: #0AA5C51A;
+  --gradient-end: #e9e7d5;
   --container-width: 1256px;
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
@@ -74,7 +74,7 @@ a {
 }
 
 a:hover {
-  color: #d45c17; /* darken(var(--color-action), 10%) */
+  color: #047051; /* darken(var(--color-action), 10%) */
 }
 
 /* Buttons */
@@ -96,8 +96,8 @@ button.primary {
 }
 
 button.primary:hover {
-  background: #d45c17;
-  border-color: #d45c17;
+  background: #047051;
+  border-color: #047051;
 }
 
 button.secondary {
@@ -164,13 +164,13 @@ section {
 
 /* Custom styles that complement Bootstrap */
 .btn-primary {
-  background-color: var(--color-action) !important;
-  border-color: var(--color-action) !important;
+  background-color: var(--color-action) ;
+  border-color: var(--color-action);
 }
 
 .btn-primary:hover {
-  background-color: #d45c17 !important;
-  border-color: #d45c17 !important;
+  background-color: #047051 !important;
+  border-color: #047051 !important;
 }
 
 .btn-outline-primary {
@@ -186,7 +186,7 @@ section {
 
 /* Custom utility classes */
 .text-primary {
-  color: var(--color-action) !important;
+  color: var(--color-text) !important;
 }
 
 .bg-primary {
@@ -264,11 +264,11 @@ section {
   border-radius: 10px;
   padding: 5px;
   margin: 0;
-  color: #071846;
+  color: #00140f;
 }
 
 .me-form-label:hover {
-  background-color: #f5f5f5;
+  background-color: #fffef5;
 }
 
 .me-radio {
@@ -276,13 +276,17 @@ section {
 }
 
 .me-radio.Mui-checked {
-  color: #0AA5C5;
+  color: #047051;
 }
 
-.me-error-text {
-  margin-top: 0.5rem;
-  font-family: 'Inter';
-  color: #d32f2f;
+.css-lcmie7-MuiTypography-root.me-error-text {
+    margin-top: 1rem;
+    color: white;
+    font-family: "Inter", sans-serif;
+    background-color: #d32f2f;
+    padding: 1rem;
+    margin-left: 0;
+    border-radius: 10px;
 }
 
 .me-card {
@@ -306,59 +310,59 @@ section {
 }
 
 .me-button-outlined {
-  border-color: #0AA5C5;
-  color: #0AA5C5;
+  border-color: #047051;
+  color: #047051;
 }
 
 .me-button-outlined:hover {
-  border-color: #0AA5C5;
+  border-color: #047051;
   background-color: rgba(10, 165, 197, 0.04);
 }
 
 .me-button-contained {
-  background-color: #0AA5C5;
+  background-color: #047051 !important;
 }
 
 .me-button-contained:hover {
-  background-color: #0994B2;
+  background-color: #047051!important;
 }
 .pages-wrapper {
   padding: 50px 0;
 }
 .pages-wrapper p {
-  color: #071846;
+  color: #00140f;
 }
 .pages-wrapper h1 {
-  color : #EA6C1D;
+  color : #047051;
   font-size: 36px;
   font-family: 'lato';
   font-weight: 900;
 }
 .pages-wrapper h2 {
-  color : #EA6C1D;
+  color : #047051;
   font-size: 30px;
   font-family: 'lato';
   font-weight: 800;
-  color: #071846;
+  color: #00140f;
 }
 .pages-wrapper h3 {
-  color : #EA6C1D;
+  color : #047051;
   font-size: 26px;
   font-family: 'lato';
   font-weight: 700;
 }
 .pages-wrapper h4 {
-  color : #EA6C1D;
+  color : #047051;
   font-size: 22px;
   font-family: 'lato';
   font-weight: 600;
 }
 .pages-wrapper h5 {
-  color : #EA6C1D;
+  color : #047051;
   font-size: 18px;
 }
 .pages-wrapper h6 {
-  color: #071846;
+  color: #00140f;
   font-size: 16px;
 }
 /*
@@ -387,7 +391,7 @@ section {
   }
   footer .nav-link {
     padding: 6px;
-    font-size: 13px;
+    font-size: 16px;
   }
 }
 

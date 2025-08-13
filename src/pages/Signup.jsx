@@ -263,14 +263,14 @@
           country: values.country
         };
   
-        console.log('Attempting registration with:', userData);
+        //console.log('Attempting registration with:', userData);
   
         // Use the custom registration endpoint
         const response = await axios.post('/custom/v1/register', userData);
   
         if (response.data && response.data.user_id) {
           setSuccess('Registration successful! Please log in.');
-          console.log('Registration successful:', response.data);
+          //console.log('Registration successful:', response.data);
           
           // Wait for 2 seconds to show success message
           setTimeout(() => {

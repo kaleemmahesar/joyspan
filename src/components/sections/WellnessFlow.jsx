@@ -59,15 +59,15 @@ const WellnessFlow = ({
   const navigate = useNavigate();
 
 
-    
+
 
   useEffect(() => {
-    
+
     const fetchData = async () => {
       try {
         const userResponse = await axios.get('/wp/v2/users/me');
         if (userResponse.data?.email) setUserEmail(userResponse.data.email);
-      } catch {}
+      } catch { }
 
       try {
         const feelingsRes = await axios.get(`/wp/v2/${feelingPostType}`, {
@@ -83,10 +83,10 @@ const WellnessFlow = ({
         const activitiesRes = await axios.get(`/wp/v2/${activityPostType}`, {
           params: { per_page: 100, categories: activityCategoryId }
         });
-        
+
         // Debug log to see the structure
-        console.log('Activity with PDF:', activitiesRes.data.find(post => post.acf?.attached_pdf));
-        
+        //console.log('Activity with PDF:', activitiesRes.data.find(post => post.acf?.attached_pdf));
+
         const formattedActivities = activitiesRes.data.map(post => ({
           name: post.title.rendered,
           description: post.content.rendered,
@@ -97,15 +97,15 @@ const WellnessFlow = ({
         setActivityDescriptions(Object.fromEntries(
           formattedActivities.map(a => [a.name, a.description])
         ));
-        
+
         // Create PDF URLs map
         const pdfUrlsMap = Object.fromEntries(
           formattedActivities.map(a => [a.name, a.pdfUrl])
         );
-        
-        console.log('PDF URLs Map:', pdfUrlsMap);
+
+        //console.log('PDF URLs Map:', pdfUrlsMap);
         setActivityPdfUrls(pdfUrlsMap);
-        
+
         setLoading(false);
       } catch (error) {
         console.error('Error fetching WordPress data:', error);
@@ -120,11 +120,11 @@ const WellnessFlow = ({
     return feelingData ? feelingData.description : "We've selected activities that will help you improve your overall well-being and find balance in your life.";
   };
 
-  
+
 
   const handleNext = (values, { setTouched }) => {
-    console.log('Current step:', activeStep);
-    console.log('Required values:', values);
+    //console.log('Current step:', activeStep);
+    //console.log('Required values:', values);
 
     // Check if required values are present based on current step
     if (activeStep === 0 && !values.feeling) {
@@ -143,27 +143,27 @@ const WellnessFlow = ({
 
     // Move to next step
     setActiveStep(prev => {
-      console.log('Moving from step', prev, 'to step', prev + 1);
+      //console.log('Moving from step', prev, 'to step', prev + 1);
       return prev + 1;
     });
   };
 
-  
+
 
   const handleBack = () => {
     setActiveStep(prev => prev - 1);
   };
 
   const handleSubmit = async (values) => {
-    console.log('Submitting wellness data...');
-    
+    //console.log('Submitting wellness data...');
+
     // Get the feeling label from the selected option
     const feelingOption = feelingOptions.find(opt => opt.value === values.feeling);
-    console.log('Selected feeling option:', feelingOption);
+    //console.log('Selected feeling option:', feelingOption);
     const path = window.location.pathname;
     const section = path.split('/')[1]; // Get 'me', 'you', or 'us' from the URL
     const sectionName = section.charAt(0).toUpperCase() + section.slice(1);
-    console.log('Section name:', sectionName);  
+    //console.log('Section name:', sectionName);  
     const wellnessData = {
       feeling: feelingOption ? feelingOption.label : values.feeling,
       feeling_value: values.feeling,
@@ -175,11 +175,11 @@ const WellnessFlow = ({
       activity_pdf_url: activityPdfUrls[values.activity] || '',
     };
 
-    console.log('Saving wellness datagggggg:', wellnessData);
+    //console.log('Saving wellness datagggggg:', wellnessData);
 
     try {
       const token = localStorage.getItem('token');
-      console.log('Using token:', token ? 'Token exists' : 'No token found');
+      //console.log('Using token:', token ? 'Token exists' : 'No token found');
 
       const response = await axios.post('/wp/v2/wellness-history', wellnessData, {
         headers: {
@@ -188,7 +188,7 @@ const WellnessFlow = ({
         }
       });
 
-      console.log('Wellness data saved successfullygfgf:', response.data);
+      //console.log('Wellness data saved successfullygfgf:', response.data);
       setIsCompleted(true);
     } catch (error) {
       console.error('Error saving wellness data:', error);
@@ -202,16 +202,16 @@ const WellnessFlow = ({
 
   const handleSendEmail = async (values) => {
     if (!values.activity || !activityPdfUrls[values.activity]) return;
-    
+
     setIsSendingEmail(true);
     try {
       const formData = new FormData();
       formData.append('pdf_url', activityPdfUrls[values.activity]);
       formData.append('action', 'send_email');
       formData.append('user_email', userEmail);
-      
+
       try {
-        await axios.post('http://localhost/joyspan-server/upload_pdf.php', formData);
+        await axios.post('https://microdoseplus.com/wp/upload_pdf.php', formData);
         alert('PDF has been sent to your email!');
       } catch (error) {
         console.warn('Email sending failed:', error);
@@ -230,8 +230,8 @@ const WellnessFlow = ({
     const section = path.split('/')[1]; // Get 'me', 'you', or 'us' from the URL
     const sectionName = section.charAt(0).toUpperCase() + section.slice(1);
     switch (activeStep) {
-      case 0: 
-        
+      case 0:
+
         return `<b>${sectionName}</b> - Choose a Feeling that applies to you or that interests you`;
       case 1: {
         const feelingOption = feelingOptions.find(opt => opt.value === values?.feeling);
@@ -243,7 +243,7 @@ const WellnessFlow = ({
         const feelingLabel = feelingOption ? feelingOption.label : '';
         return `<b>${sectionName}</b> - Your plan for <i>${feelingLabel}</i> with <i>${values?.activity || ''}</i>`;
       }
-      default: 
+      default:
         return "";
     }
   };
@@ -296,18 +296,11 @@ const WellnessFlow = ({
             <Typography variant="h6" className="success-subtitle">When you feel ready, try another exercise.</Typography>
             {isCompleted && (
               <>
-            <Typography variant="body2" color="textSecondary" sx={{ mt: 1, mb: 2 }}>
-              Your activity has been saved to your wellness history
-            </Typography>
-            <Button 
-              className='mb-3'
-              variant="contained" 
-              color="warning" 
-              onClick={() => {
-            setActiveStep(0);
-          }} // Replace with your actual handler
-            >Start Over Journey</Button>
-            </>
+                <Typography variant="body2" color="textSecondary" sx={{ mt: 1, mb: 2 }}>
+                  Your activity has been saved to your wellness history
+                </Typography>
+
+              </>
             )}
             {values.activity && activityPdfUrls[values.activity] && (
               <Box className="action-buttons">
@@ -320,6 +313,19 @@ const WellnessFlow = ({
                 >
                   Download Activity PDF
                 </Button>
+
+                <Typography variant="body2" color="textSecondary" sx={{ mt: 1, mb: 2 }}>
+                  Your activity has been saved to your wellness history
+                </Typography>
+
+                <Button
+                  className='mb-3'
+                  variant="contained"
+                  color="warning"
+                  onClick={() => {
+                    setActiveStep(0);
+                  }} // Replace with your actual handler
+                >Start Over Journey</Button>
                 {/* <Button
                   variant="contained"
                   onClick={() => handleSendEmail(values)}
@@ -330,7 +336,7 @@ const WellnessFlow = ({
                 </Button> */}
                 {userEmail && (
                   <Typography variant="body2" className="email-text">
-                    You'll receive a PDF of the instructions at <b>{userEmail}</b>
+                    {/* You'll receive a PDF of the instructions at <b>{userEmail}</b> */}
                   </Typography>
                 )}
               </Box>
@@ -343,8 +349,8 @@ const WellnessFlow = ({
   };
 
   const validationSchema = Yup.object({
-    feeling: Yup.string().required('Please select how you are feeling'),
-    activity: Yup.string().required('Please select an activity')
+    feeling: Yup.string().required('Please select your feeling'),
+    activity: Yup.string().required('Please select your activity')
   });
 
   if (loading) return <Loader size="large" color="primary" />;
@@ -354,17 +360,17 @@ const WellnessFlow = ({
       <div className="container">
         <Container maxWidth={false}>
           <Paper elevation={0} sx={{ position: 'relative', zIndex: 1 }} className='form-wrapper'>
-            <Formik 
-              initialValues={initialValues} 
-              validationSchema={validationSchema} 
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              {({ values, setFieldValue, setTouched, errors, touched  }) => (
+              {({ values, setFieldValue, setTouched, errors, touched }) => (
                 <Form>
-                  
+
                   {activeStep !== 3 && (
-                    <Typography 
-                      variant="h5" 
+                    <Typography
+                      variant="h5"
                       className="me-heading"
                       dangerouslySetInnerHTML={{ __html: getStepHeading(values) }}
                     />
@@ -376,8 +382,8 @@ const WellnessFlow = ({
                         {activeStep > 0 && (
                           <Button onClick={handleBack} variant="outlined" className="me-button me-button-outlined">Back</Button>
                         )}
-                        <Button 
-                          variant="contained" 
+                        <Button
+                          variant="contained"
                           onClick={() => handleNext(values, { setTouched })}
                           type="button"
                           className="me-button me-button-contained"

@@ -74,7 +74,7 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-auto d-flex align-items-center logo-area">
               <Link to="/" className="logo">
-                <img src={logoUrl} alt="JoySpan" />
+                <img src={logoUrl} alt="Microdoseplus" />
               </Link>
               <button 
   className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}
@@ -115,7 +115,7 @@ const Header = () => {
                     <button 
                       className="btn btn-outline" 
                       onClick={handleLogout}
-                      style={{ height: '38px', padding: '0 20px', fontSize: '14px', fontWeight: '500' }}
+                      style={{ height: '38px', padding: '0 20px', fontSize: '16px', fontWeight: '500' }}
                     >
                       Sign Out
                     </button>

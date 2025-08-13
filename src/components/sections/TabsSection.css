@@ -1,7 +1,7 @@
 .tabs-section {
   padding: 0 0;
   position: relative;
-  top: -49px;
+  top: -55px;
 }
 
 .tabs-section .tabs-container {
@@ -17,7 +17,7 @@
 }
 
 .tabs-section .tabs-header .tab-button {
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-sm);
   border: none;
   background: var(--white-color);
   font-size: 1rem;
@@ -87,7 +87,7 @@
 }
 
 .tab-text-content p strong{
-  color : #EA6C1D;
+  color : var(--color-text);
   padding-right: 5px;
 }
 

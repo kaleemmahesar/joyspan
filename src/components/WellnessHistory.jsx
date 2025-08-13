@@ -9,7 +9,7 @@ const WellnessHistory = () => {
 
   // Map section values to labels and colors
   const sectionMeta = {
-    'Your': { label: 'Me', color: '#0AA5C5' },
+    'Your': { label: 'Me', color: '#047051' },
     'You': { label: 'You', color: '#2E7D32' },
     'Us': { label: 'Us', color: '#ED6C02' }
   };

@@ -12,10 +12,10 @@ const DynamicPage = () => {
     setLoading(true);
     setPage(null);
 
-    console.log('Fetching page with slug:', slug);
+    //console.log('Fetching page with slug:', slug);
 
     axios
-      .get(`http://localhost/joyspan-server/wp-json/wp/v2/pages?slug=${slug}`)
+      .get(`https://microdoseplus.com/wp/wp-json/wp/v2/pages?slug=${slug}`)
       .then((res) => {
         if (res.data.length > 0) {
           setPage(res.data[0]);

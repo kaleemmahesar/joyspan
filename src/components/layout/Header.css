@@ -7,7 +7,7 @@
 }
 
 .top-header {
-  background-color: #0AA5C5;
+  background-color: #f3eecd;
   padding: 8px 0;
   color: white;
   width: 100%;
@@ -21,7 +21,7 @@
 }
 
 .top-header .welcome-text {
-  color: white;
+  color: var(--color-text);
   margin-bottom: 0;
   font-weight: bold;
   font-size: 24px;
@@ -30,7 +30,7 @@
 .top-header .join-us-btn {
   height: 38px;
   min-width: 194px;
-  background-color: var(--color-action);
+  background-color: var(--color-text);
   border: none;
   color: var(--white-color);
   border-radius: 10px;
@@ -76,18 +76,19 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 24px;
+  gap: 54px;
 }
 
 .nav-link {
-  color: #071846 !important;
+  color: #00140f !important;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
+  font-size: 16px !important;
 }
 
 .nav-link:hover {
-  color: #0AA5C5 !important;
+  color: var(--primary-color) !important;
 }
 
 .header-buttons {
@@ -111,24 +112,24 @@
 
 .header-buttons .btn-outline {
   background-color: transparent;
-  border: 1px solid #0AA5C5;
-  color: #0AA5C5;
+  border: 1px solid #047051;
+  color: #047051;
 }
 
 .header-buttons .btn-outline:hover {
-  background-color: #0AA5C5;
+  background-color: #047051;
   color: white;
 }
 
 .header-buttons .btn-primary {
-  background-color: #0AA5C5;
-  border: 1px solid #0AA5C5;
+  background-color: var(--color-text);
+  border: 1px solid var(--color-text);
   color: white;
 }
 
 .header-buttons .btn-primary:hover {
-  background-color: #0994b0;
-  border-color: #0994b0;
+  background-color: #047051;
+  border-color: #047051;
 }
 
 .user-info {
@@ -137,18 +138,18 @@
 }
 
 .user-name {
-  color: #071846;
-  font-size: 14px;
+  color: #00140f;
+  font-size: 16px;
   font-weight: 500;
   text-transform: capitalize;
 }
 
 .user-name a {
-  color: #EA6C1D;
+  color: var(--color-text);
 }
 
 .user-name a:hover {
-  color: #c5530d;
+  color: var(--color-text);
 }
 
 .menu-toggle {
@@ -157,7 +158,7 @@
   margin-left: 16px;
   background: none;
   border: none;
-  color: #071846;
+  color: #00140f;
   cursor: pointer;
   transition: transform 0.3s ease, color 0.3s ease;
   padding: 0;
@@ -169,7 +170,7 @@
 
 .menu-toggle.open i {
   transform: rotate(180deg);
-  color: #0AA5C5;
+  color: #047051;
 }
 
 .mobile-menu {

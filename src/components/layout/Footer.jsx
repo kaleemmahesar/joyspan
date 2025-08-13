@@ -39,12 +39,12 @@ const Footer = () => {
       }
     };
   return (
-    <footer className="bg-light py-5 mt-auto">
+    <footer className="py-5 mt-auto">
       <div className="container">
         <div className="row align-items-center mb-4">
           <div className="col-md-3 text-center text-md-start">
             <Link to="/">
-              <img src="/logo.png" alt="JoySpan Logo" className="h-40" />
+              <img src="https://microdoseplus.com/microdoseplus-logo.png" alt="Microdoseplus" className="h-40" />
             </Link>
           </div>
           <div className="col-md-6">
@@ -71,16 +71,13 @@ const Footer = () => {
           <div className="col-md-3">
             <div className="d-flex justify-content-center justify-content-md-end gap-3">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
-                <RiFacebookCircleFill />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
-                <RiTwitterXFill />
+                <RiFacebookCircleFill color='#047051' />
               </a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
-                <RiInstagramFill />
+                <RiInstagramFill color='#047051' />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
-                <RiLinkedinBoxFill />
+                <RiLinkedinBoxFill color='#047051' />
               </a>
             </div>
           </div>

@@ -60,7 +60,7 @@ const Login = () => {
           localStorage.setItem('token', token);
           // Login with user data
           await login(userData);
-          console.log('Auth0 login successful, redirecting...');
+          //console.log('Auth0 login successful, redirecting...');
           navigate('/');
         } catch (err) {
           console.error('Auth0 login error:', err);
@@ -113,7 +113,7 @@ const Login = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setError('');
     try {
-      console.log('Attempting login with:', values);
+      //console.log('Attempting login with:', values);
       const response = await axios.post(
         '/jwt-auth/v1/token',
         {
@@ -128,7 +128,7 @@ const Login = () => {
         }
       );
 
-      console.log('Login response:', response.data);
+      //console.log('Login response:', response.data);
 
       if (response.data && response.data.token) {
         // Store token
@@ -144,7 +144,7 @@ const Login = () => {
           }
         );
         
-        console.log('User data:', userResponse.data);
+        //console.log('User data:', userResponse.data);
         
         if (!userResponse.data) {
           throw new Error('Failed to get user data');
@@ -163,7 +163,7 @@ const Login = () => {
 
         // Login with user data
         await login(userData);
-        console.log('Login successful, redirecting...');
+        //console.log('Login successful, redirecting...');
         document.body.classList.add('user-logged-in');
         navigate('/');
       }

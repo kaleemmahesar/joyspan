@@ -22,7 +22,7 @@
 }
 
 .activity-pdf-link {
-  color: #0AA5C5;
+  color: #047051;
   text-decoration: none;
   font-size: 0.875rem;
   margin-left: 16px;
@@ -65,17 +65,22 @@
 }
 
 .me-form-label:hover {
-  background-color: rgba(10, 165, 197, 0.04);
-  border-color: #0AA5C5;
+  background-color: #e9e7d5;
+  border-color: #047051;
 }
 
 .me-radio {
-  color: #0AA5C5;
+  color: #047051;
 }
 
-.me-error-text {
-  margin-top: 0.5rem;
-  color: #d32f2f;
+.css-lcmie7-MuiTypography-root.me-error-text {
+    margin-top: 1rem;
+    color: white;
+    font-family: "Inter", sans-serif;
+    background-color: #d32f2f;
+    padding: 1rem;
+    margin-left: 0;
+    border-radius: 10px;
 }
 
 .me-text {
@@ -100,20 +105,20 @@
 }
 
 .me-button-contained {
-  background-color: #0AA5C5;
+  background-color: #047051 !important;
 }
 
 .me-button-contained:hover {
-  background-color: #0889A3;
+  background-color: #047051 !important;
 }
 
 .me-button-outlined {
-  border-color: #0AA5C5;
-  color: #0AA5C5;
+  border-color: #047051;
+  color: #047051;
 }
 
 .me-button-outlined:hover {
-  border-color: #0889A3;
+  border-color: #047051;
   background-color: rgba(10, 165, 197, 0.04);
 }
 
@@ -145,23 +150,23 @@
 }
 
 .download-button {
-  color: #0AA5C5;
-  border-color: #0AA5C5;
+  color: #047051 !important;
+  border-color: #047051 !important;
   min-width: 250px;
 }
 
 .download-button:hover {
-  border-color: #0889A3;
+  border-color: #047051;
   background-color: rgba(10, 165, 197, 0.04);
 }
 
 .email-button {
-  background-color: #0AA5C5;
+  background-color: #047051;
   min-width: 250px;
 }
 
 .email-button:hover {
-  background-color: #0889A3;
+  background-color: #047051;
 }
 
 .email-text {
@@ -174,7 +179,7 @@
 .me-content .me-heading {
   text-align: left;
   font-size: 25px;
-  color: rgba(7, 24, 70, 1);  
+  color: #00140f;  
 }
 .me-content .me-heading i,
 .me-content .me-heading b {
@@ -183,7 +188,7 @@
   font-family: "Lato", sans-serif;
 }
 .me-content .me-text {
-  color: rgba(7, 24, 70, 1);
+  color: #00140f;
   font-size: 18px;
 }
 .success-container :is(h4, h6, p, .MuiButtonBase-root) {
@@ -194,7 +199,7 @@
 }
 .success-container :is(.email-text) b{
   font-weight: 600;
-  color: #EA6C1D;
+  color: #047051;
 }
 .form-wrapper {
   width: 100%;
@@ -203,4 +208,7 @@
   font-family: "Lato", sans-serif;
   font-weight: 600;
   box-shadow: none;
+}
+.MuiButtonBase-root.MuiButton-containedWarning{
+  background-color:#047051 !important;
 }

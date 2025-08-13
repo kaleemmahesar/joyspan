@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Get WordPress environment
-require_once($_SERVER['DOCUMENT_ROOT'] . '/joyspan-server/wp-load.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wp/wp-load.php');
 
 // Get request body
 $data = json_decode(file_get_contents('php://input'), true);

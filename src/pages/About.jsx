@@ -8,11 +8,11 @@ const About = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost/joyspan-server/wp-json/wp/v2/pages?slug=about')
+      .get('https://microdoseplus.com/wp/wp-json/wp/v2/pages?slug=about')
       .then((res) => {
         if (res.data.length > 0) {
           setPageContent(res.data[0]);
-          console.log('Page content fetched:', res.data[0]);
+          //console.log('Page content fetched:', res.data[0]);
         }
       })
       .catch((err) => {

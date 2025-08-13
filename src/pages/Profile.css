@@ -12,7 +12,7 @@
 .profile-header {
   background: white;
   border-radius: 15px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 15px #00140f;
   margin-bottom: 20px;
   position: relative;
   padding: 20px;
@@ -20,7 +20,7 @@
 
 .profile-cover {
   height: 200px;
-  background: linear-gradient(45deg, #0AA5C5, #0A85C5);
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-color));
   border-radius: 15px 15px 0 0;
   position: relative;
 }
@@ -123,7 +123,7 @@
 }
 
 .contact-info-item i {
-  color: #0AA5C5;
+  color: var(--primary-color);
   width: 20px;
 }
 
@@ -153,7 +153,7 @@
 }
 
 .form-control:focus {
-  border-color: #0AA5C5;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 0.2rem rgba(10, 165, 197, 0.25);
 }
 
@@ -165,8 +165,8 @@
 }
 
 .btn-primary {
-  background-color: #0AA5C5;
-  border-color: #0AA5C5;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .btn-primary:hover {
@@ -175,13 +175,13 @@
 }
 
 .btn-outline-primary {
-  color: #0AA5C5;
-  border-color: #0AA5C5;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .btn-outline-primary:hover {
-  background-color: #0AA5C5;
-  border-color: #0AA5C5;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 /* Alert Styles */

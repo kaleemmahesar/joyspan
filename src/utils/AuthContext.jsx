@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem('user');
         const token = localStorage.getItem('token');
 
-        console.log('Checking auth - Stored user:', storedUser);
-        console.log('Checking auth - Token:', token);
+        //console.log('Checking auth - Stored user:', storedUser);
+        //console.log('Checking auth - Token:', token);
 
         if (storedUser && token) {
           // Set the token in axios headers
@@ -23,15 +23,15 @@ export const AuthProvider = ({ children }) => {
           
           try {
             // Verify the token is still valid
-            const response = await axios.get('http://localhost/joyspan-server/wp-json/wp/v2/users/me');
-            console.log('Auth check response:', response.data);
+            const response = await axios.get('https://microdoseplus.com/wp/wp-json/wp/v2/users/me');
+            //console.log('Auth check response:', response.data);
             
             if (response.data) {
               const userData = JSON.parse(storedUser);
-              console.log('Setting user data:', userData);
+              //console.log('Setting user data:', userData);
               setUser(userData);
             } else {
-              console.log('No user data in response, logging out');
+              //console.log('No user data in response, logging out');
               logout();
             }
           } catch (error) {
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
             logout();
           }
         } else {
-          console.log('No stored user or token found');
+          //console.log('No stored user or token found');
         }
       } catch (error) {
         console.error('Auth check error:', error);
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (userData) => {
-    console.log('Login function called with user data:', userData);
+    //console.log('Login function called with user data:', userData);
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
     

@@ -71,7 +71,7 @@ const Home = () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/wp-json/custom/v1/options`);
         setHeroSection(res.data.home_hero_section);
-        console.log(herosection)
+        //console.log(herosection)
       } catch (err) {
         console.error('Error fetching site logo:', err);
       }

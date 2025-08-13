@@ -1,18 +1,18 @@
 :root {
   /* Colors */
-  --color-action: #EA6C1D;
+  --color-action: #F2CE00;
   --color-icon: #CFF6F9;
   --color-text: #AE4141;
-  --dark-blue-color: #0AA5C5;
+  --dark-blue-color: #047051;
   --white-color: #FFFFFF;
-  --black-color: #071846;
+  --black-color: #00140f;
 
   /* Backgrounds */
   --bg-primary: #EEEEEE;
   --bg-secondary: #CFD5E6;
   --gradient-start: #F3F8F91A;
-  --gradient-end: #0AA5C51A;
-  --bg-blue-color: #0AA5C5;
+  --gradient-end: #e9e7d5;
+  --bg-blue-color: #047051;
 
   /* Gradients */
   --gradient-primary: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
