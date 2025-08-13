@@ -273,7 +273,7 @@ const Login = () => {
                   <Form className="login-form">
                     <div className="form-row">
                       <div className="form-field">
-                        <label>Username</label>
+                        <label>Username or Email</label>
                         <Field
                           as={TextField}
                           name="username"
