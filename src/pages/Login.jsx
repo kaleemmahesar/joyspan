@@ -198,7 +198,7 @@ const Login = () => {
             
             {error && (
               <Alert severity="error" sx={{ mb: 2 }}>
-                {error}
+                <div dangerouslySetInnerHTML={{ __html: error }} />
               </Alert>
             )}
 

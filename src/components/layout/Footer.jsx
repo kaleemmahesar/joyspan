@@ -44,7 +44,7 @@ const Footer = () => {
         <div className="row align-items-center mb-4">
           <div className="col-md-3 text-center text-md-start">
             <Link to="/">
-              <img src="https://microdoseplus.com/microdoseplus-logo.png" alt="Microdoseplus" className="h-40" />
+              <img src="/microdosplus-logo.svg" alt="Microdoseplus" className="h-40" />
             </Link>
           </div>
           <div className="col-md-6">

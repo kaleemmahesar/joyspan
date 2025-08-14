@@ -74,7 +74,7 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-auto d-flex align-items-center logo-area">
               <Link to="/" className="logo">
-                <img src={logoUrl} alt="Microdoseplus" />
+                <img src='/microdosplus-logo.svg' alt="Microdoseplus" />
               </Link>
               <button 
   className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}

@@ -53,7 +53,7 @@ const WellnessHistory = () => {
   if (error) {
     return (
       <div className="alert alert-danger" role="alert">
-        {error}
+        <div dangerouslySetInnerHTML={{ __html: error }} />
       </div>
     );
   }
