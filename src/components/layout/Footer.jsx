@@ -83,7 +83,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="text-center border-top pt-3">
-          <p className="mb-0">&copy; {new Date().getFullYear()} Joyspan. All rights reserved.</p>
+          <p className="mb-0">&copy; {new Date().getFullYear()} MicrodosePlus. All rights reserved.</p>
         </div>
       </div>
     </footer>
