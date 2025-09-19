@@ -314,12 +314,12 @@
 
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
+              <div dangerouslySetInnerHTML={{ __html: error }} />
             </Alert>
           )}
           {success && (
             <Alert severity="success" sx={{ mb: 2 }}>
-              {success}
+              <div dangerouslySetInnerHTML={{ __html: success }} />
             </Alert>
           )}
 

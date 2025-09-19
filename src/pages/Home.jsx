@@ -30,11 +30,12 @@ const Home = () => {
     const loadTabsData = async () => {
       try {
         const data = await fetchTabsData();
+        console.log('Fetched tabs data:', data);
         // Map WordPress data to match the required structure
-        const mappedTabs = data.map(tab => ({
+        const mappedTabs = data.map((tab, index) => ({
           title: tab.title,
           subtitle: 'Activities for well-being of health professionals',
-          link: '/me',
+          link: index === 0 ? '/me' : index === 1 ? '/you' : '/us',
           content: (
             <div className="row align-items-center">
               <div className="col-lg-8">

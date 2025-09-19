@@ -149,7 +149,7 @@ const Profile = () => {
               {/* Other Info */}
 
               {/* Feedback */}
-              {error && <div className="alert alert-danger mt-3">{error}</div>}
+              {error && <div className="alert alert-danger mt-3"><div dangerouslySetInnerHTML={{ __html: error }} /></div>}
               {successMsg && <div className="alert alert-success mt-3">{successMsg}</div>}
             </div>
           </div>

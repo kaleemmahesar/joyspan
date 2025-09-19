@@ -62,7 +62,7 @@ const Header = () => {
       <div className={`top-header ${isMenuOpen ? 'hidden' : ''}`}>
         <div className="container">
           <div className="d-flex justify-content-center gap-4 align-items-center p-2">
-            <p className="welcome-text">Find exercises that can help you, your patients and your team</p>
+            <p className="welcome-text">Find well-being activities that can help you, your patients and your team</p>
             {!user && (
               <Link to="/signup" className="join-us-btn">Join Us</Link>
             )}
@@ -74,7 +74,7 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-auto d-flex align-items-center logo-area">
               <Link to="/" className="logo">
-                <img src={logoUrl} alt="Microdoseplus" />
+                <img src='/microdosplus-logo.svg' alt="Microdoseplus" />
               </Link>
               <button 
   className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}

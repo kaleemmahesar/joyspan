@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import '../App.css';
 import Loader from '../components/Loader';
 
 const DynamicPage = () => {
@@ -11,11 +12,11 @@ const DynamicPage = () => {
   useEffect(() => {
     setLoading(true);
     setPage(null);
-
+    cache: "no-store"
     //console.log('Fetching page with slug:', slug);
 
     axios
-      .get(`https://microdoseplus.com/wp/wp-json/wp/v2/pages?slug=${slug}`)
+      .get(`https://microdoseplus.com/wp/wp-json/wp/v2/pages?slug=${slug}&t=${Date.now()}`)
       .then((res) => {
         if (res.data.length > 0) {
           setPage(res.data[0]);
