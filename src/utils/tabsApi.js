@@ -5,6 +5,7 @@ export const fetchTabsData = async () => {
     // Fetch tabs data from WordPress
     const response = await axios.get('/wp/v2/posts', {
       params: {
+        _t: Date.now(), // 👈 forces fresh fetch every time
         categories: 8, // Replace with your actual category ID for tabs
         per_page: 100,
         _embed: true // This will include featured image data

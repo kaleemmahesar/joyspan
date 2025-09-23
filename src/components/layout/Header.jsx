@@ -62,7 +62,7 @@ const Header = () => {
       <div className={`top-header ${isMenuOpen ? 'hidden' : ''}`}>
         <div className="container">
           <div className="d-flex justify-content-center gap-4 align-items-center p-2">
-            <p className="welcome-text">Find well-being activities that can help you, your patients and your team</p>
+            <p className="welcome-text">Find wellbeing activities that can help you, your patients and your team</p>
             {!user && (
               <Link to="/signup" className="join-us-btn">Join Us</Link>
             )}

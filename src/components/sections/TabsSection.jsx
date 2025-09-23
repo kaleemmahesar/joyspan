@@ -41,7 +41,6 @@ const TabsSection = ({ tabs = [], title }) => {
             <div className="tab-content">
               <div className="row">
                 <div className="col-12">
-                  <h2>{tabs[0].title}</h2>
                   <div>{tabs[0].content}</div>
                 </div>
               </div>
