@@ -124,18 +124,12 @@ const Home = () => {
         <div className="modal show d-block" tabIndex="-1" role="dialog" onClick={handleClose}>
           <div className="modal-dialog modal-dialog-centered modal-lg" role="document" onClick={(e) => e.stopPropagation()}>
             <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Video</h5>
+              <div className="modal-header" style={{ borderBottom: 'none', paddingBottom: 0 }}>
                 <button type="button" className="btn-close" onClick={handleClose}></button>
               </div>
               <div className="modal-body">
                 <div className="ratio ratio-16x9">
-                  <iframe
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                    title="YouTube video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/wyx2AhRFoZA?si=9Ia9uY5adsLf_QnE&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
               </div>
             </div>
