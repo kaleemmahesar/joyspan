@@ -60,3 +60,8 @@
 .disclaimer {
   @apply text-gray-700;
 }
+
+.modal-body iframe {
+  width: 100% !important;
+  min-height: 400px;
+}

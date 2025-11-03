@@ -1,45 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchMenuItemsHeader } from '../../utils/menuApi';
+import { useGetMenuItemsHeaderQuery, useGetSiteOptionsQuery } from '../../apiSlice';
+import { refreshAllData } from '../../utils/cacheUtils';
 import { useAuth } from '../../utils/AuthContext';
 import Loader from '../Loader';
 import './Header.css';
-import axios from 'axios';
 
 const Header = () => {
-  const [menuItems, setMenuItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [logoUrl, setLogoUrl] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Use Redux Toolkit Query hooks for caching
+  const { 
+    data: menuItems, 
+    isLoading: menuLoading, 
+    isError: menuError
+  } = useGetMenuItemsHeaderQuery();
+  
+  const { 
+    data: siteOptions, 
+    isLoading: optionsLoading, 
+    isError: optionsError
+  } = useGetSiteOptionsQuery();
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const loadMenuItems = async () => {
-      try {
-        const items = await fetchMenuItemsHeader();
-        setMenuItems(items);
-      } catch (error) {
-        console.error('Error loading menu items:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadMenuItems();
-
-    const fetchLogo = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/wp-json/custom/v1/options`);
-        setLogoUrl(res.data.site_logo);
-      } catch (err) {
-        console.error('Error fetching site logo:', err);
-      }
-    };
-
-    fetchLogo();
-  }, []);
 
   const cleanUrl = (url) => {
     try {
@@ -57,6 +41,11 @@ const Header = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  // Function to refresh all cached data (useful when content is updated in WordPress)
+  const handleRefreshData = () => {
+    refreshAllData();
+  };
+
   return (
     <header className="header">
       <div className={`top-header ${isMenuOpen ? 'hidden' : ''}`}>
@@ -66,6 +55,16 @@ const Header = () => {
             {!user && (
               <Link to="/signup" className="join-us-btn">Join Us</Link>
             )}
+            {/* Refresh button for admins or during development */}
+            {user && user.role === 'administrator' && (
+              <button 
+                onClick={handleRefreshData}
+                className="btn btn-sm btn-outline-secondary"
+                style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem' }}
+              >
+                Refresh Data
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -74,7 +73,7 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-auto d-flex align-items-center logo-area">
               <Link to="/" className="logo">
-                <img src='/microdosplus-logo.svg' alt="Microdoseplus" />
+                <img src={siteOptions?.site_logo || '/microdosplus-logo.svg'} alt="Microdoseplus" />
               </Link>
               <button 
   className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}
@@ -87,11 +86,11 @@ const Header = () => {
             <div className={`col mobile-menu ${isMenuOpen ? 'open' : ''}`}>
               <div className={`col main-nav-wrapper`}>
                 <nav className="main-nav">
-                  {loading ? (
+                  {(menuLoading || optionsLoading) ? (
                     <Loader size="small" color="primary" />
                   ) : (
                     <ul className="nav-list">
-                      {menuItems.map((item) => (
+                      {menuItems && menuItems.map((item) => (
                         <li key={item.id}>
                           <Link 
                             to={cleanUrl(item.object_slug)} 

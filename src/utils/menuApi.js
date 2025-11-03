@@ -1,24 +1,17 @@
 import axios from './axios';
 
+// Simple in-memory cache
+const cache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// This file is deprecated as we're now using Redux Toolkit Query for API caching
+// See apiSlice.js for the new implementation
 export const fetchMenuItemsHeader = async () => {
-  try {
-    // Fetch menu items from WordPress
-    const response = await axios.get('/wp-api-menus/v2/menus/6');
-    return response.data.items;
-  } catch (error) {
-    console.error('Error fetching menu items:', error);
-    return [];
-  }
+  console.warn('fetchMenuItemsHeader is deprecated. Use Redux Toolkit Query instead.');
+  return [];
 }; 
 
 export const fetchMenuItemsFooter = async () => {
-  try {
-    // Fetch menu items from WordPress
-    const response = await axios.get('/wp-api-menus/v2/menus/14');
-    return response.data.items;
-  } catch (error) {
-    console.error('Error fetching menu items:', error);
-    return [];
-  }
-}; 
-
+  console.warn('fetchMenuItemsFooter is deprecated. Use Redux Toolkit Query instead.');
+  return [];
+};

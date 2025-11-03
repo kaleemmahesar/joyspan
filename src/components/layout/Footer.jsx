@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { 
   RiFacebookCircleFill,
   RiTwitterXFill,
@@ -7,37 +7,26 @@ import {
   RiLinkedinBoxFill
 } from 'react-icons/ri';
 import Loader from '../Loader';
-import { fetchMenuItemsFooter } from '../../utils/menuApi';
+import { useGetMenuItemsFooterQuery } from '../../apiSlice';
 
 const Footer = () => {
-  const [menuItems, setMenuItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  // Use Redux Toolkit Query hooks for caching
+  const { 
+    data: menuItems, 
+    isLoading, 
+    isError
+  } = useGetMenuItemsFooterQuery();
 
-  useEffect(() => {
-      const loadMenuItems = async () => {
-        try {
-          const items = await fetchMenuItemsFooter();
-          setMenuItems(items);
-        } catch (error) {
-          console.error('Error loading menu items:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      loadMenuItems();
-    }, []);
-  
-    // Function to clean URL for React Router
-    const cleanUrl = (url) => {
-      try {
-        const urlObj = new URL(url);
-        return urlObj.pathname;
-      } catch (error) {
-        return url;
-      }
-    };
+  // Function to clean URL for React Router
+  const cleanUrl = (url) => {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.pathname;
+    } catch (error) {
+      return url;
+    }
+  };
+
   return (
     <footer className="py-5 mt-auto">
       <div className="container">
@@ -49,11 +38,11 @@ const Footer = () => {
           </div>
           <div className="col-md-6">
             <nav className="d-flex justify-content-center">
-              {loading ? (
+              {isLoading ? (
                   <Loader size="small" color="primary" />
                 ) : (
                   <ul className="nav">
-                    {menuItems.map((item) => (
+                    {menuItems && menuItems.map((item) => (
                       <li key={item.id} className="nav-item">
                         <Link 
                           to={cleanUrl(item.object_slug)} 
@@ -82,12 +71,10 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="text-center border-top pt-3">
-          <p className="mb-0">&copy; {new Date().getFullYear()} MicrodosePlus. All rights reserved.</p>
-        </div>
+        <div class="text-center border-top pt-3"><p class="mb-0">© 2025 MicrodosePlus. All rights reserved.</p></div>
       </div>
     </footer>
   );
 };
 
-export default Footer; 
+export default Footer;

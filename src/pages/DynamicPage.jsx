@@ -1,40 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useGetPageBySlugQuery } from '../apiSlice';
 import '../App.css';
 import Loader from '../components/Loader';
 
 const DynamicPage = () => {
   const { slug } = useParams();
-  const [page, setPage] = useState(null);
-  const [loading, setLoading] = useState(true);
+  
+  // Use Redux Toolkit Query hook for caching
+  const { 
+    data: page, 
+    isLoading, 
+    isError
+  } = useGetPageBySlugQuery(slug);
 
-  useEffect(() => {
-    setLoading(true);
-    setPage(null);
-    cache: "no-store"
-    //console.log('Fetching page with slug:', slug);
-
-    axios
-      .get(`https://microdoseplus.com/wp/wp-json/wp/v2/pages?slug=${slug}&t=${Date.now()}`)
-      .then((res) => {
-        if (res.data.length > 0) {
-          setPage(res.data[0]);
-        } else {
-          setPage(null);
-        }
-      })
-      .catch((err) => {
-        console.error('Error fetching page:', err);
-        setPage(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [slug]); // ✅ Watch for slug changes
-
-  if (loading) return <Loader />;
-  if (!page) return <h2>Page not found</h2>;
+  if (isLoading) return <Loader />;
+  if (isError || !page) return <h2>Page not found</h2>;
 
   return (
     <main className="pages-wrapper">

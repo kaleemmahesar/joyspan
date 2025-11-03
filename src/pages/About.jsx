@@ -1,29 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { useGetPageBySlugQuery } from '../apiSlice';
 import Loader from '../components/Loader';
 
 const About = () => {
-  const [pageContent, setPageContent] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Use Redux Toolkit Query hook for caching
+  const { 
+    data: pageContent, 
+    isLoading, 
+    isError
+  } = useGetPageBySlugQuery('about');
 
-  useEffect(() => {
-    axios
-      .get('https://microdoseplus.com/wp/wp-json/wp/v2/pages?slug=about')
-      .then((res) => {
-        if (res.data.length > 0) {
-          setPageContent(res.data[0]);
-          //console.log('Page content fetched:', res.data[0]);
-        }
-      })
-      .catch((err) => {
-        console.error('Failed to fetch page content:', err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <Loader />;
+  if (isLoading) return <Loader />;
+  if (isError || !pageContent) return <h2>Failed to load page content</h2>;
 
   return (
     <main className='page-wrapper'>

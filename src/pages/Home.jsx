@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import TabsSection from '../components/sections/TabsSection';
 import HeroSection from '../components/sections/HeroSection';
-import { fetchTabsData } from '../utils/tabsApi';
-import axios from 'axios';
+import { useGetTabsDataQuery, useGetSiteOptionsQuery } from '../apiSlice';
+import { refreshSiteOptions } from '../utils/cacheUtils';
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [tabs, setTabs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [herosection, setHeroSection] = useState('');
+
+  // Use Redux Toolkit Query hooks for caching
+  const { 
+    data: tabsData, 
+    isLoading: tabsLoading, 
+    isError: tabsError
+  } = useGetTabsDataQuery();
+  
+  const { 
+    data: siteOptions, 
+    isLoading: optionsLoading, 
+    isError: optionsError
+  } = useGetSiteOptionsQuery();
 
   const decodeHtmlEntities = (text) => {
     const textarea = document.createElement('textarea');
@@ -27,66 +39,48 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const loadTabsData = async () => {
-      try {
-        const data = await fetchTabsData();
-        console.log('Fetched tabs data:', data);
-        // Map WordPress data to match the required structure
-        const mappedTabs = data.map((tab, index) => ({
-          title: tab.title,
-          subtitle: 'Activities for well-being of health professionals',
-          link: index === 0 ? '/me' : index === 1 ? '/you' : '/us',
-          content: (
-            <div className="row align-items-center">
-              <div className="col-lg-8">
-                <div 
-                  className="tab-text-content" 
-                  dangerouslySetInnerHTML={{ 
-                    __html: cleanWordPressContent(tab.content) 
-                  }} 
+    if (tabsData) {
+      // Map WordPress data to match the required structure
+      const mappedTabs = tabsData.map((tab, index) => ({
+        title: tab.title,
+        subtitle: 'Activities for well-being of health professionals',
+        link: index === 0 ? '/me' : index === 1 ? '/you' : '/us',
+        content: (
+          <div className="row align-items-center">
+            <div className="col-lg-8">
+              <div 
+                className="tab-text-content" 
+                dangerouslySetInnerHTML={{ 
+                  __html: cleanWordPressContent(tab.content) 
+                }} 
+              />
+            </div>
+            <div className="col-lg-4">
+              <div className="tab-image-wrapper">
+                <img 
+                  src={tab.featured_image || '/s2.png'} 
+                  className="img-fluid" 
+                  alt={tab.title} 
                 />
               </div>
-              <div className="col-lg-4">
-                <div className="tab-image-wrapper">
-                  <img 
-                    src={tab.featured_image || '/s2.png'} 
-                    className="img-fluid" 
-                    alt={tab.title} 
-                  />
-                </div>
-              </div>
             </div>
-          )
-        }));
-        setTabs(mappedTabs);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error loading tabs data:', error);
-        setLoading(false);
-      }
-    };
-
-    loadTabsData();
-
-    const fetchThemeOptions = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/wp-json/custom/v1/options`);
-        setHeroSection(res.data.home_hero_section);
-        //console.log(herosection)
-      } catch (err) {
-        console.error('Error fetching site logo:', err);
-      }
-    };
-
-  fetchThemeOptions();
-  }, []);
+          </div>
+        )
+      }));
+      setTabs(mappedTabs);
+      setLoading(false);
+    }
+  }, [tabsData]);
 
   const handlePlayClick = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
+  // Function to refresh site options (useful when iframe HTML is updated in WordPress)
+  
+
   return (
     <main>
-      <HeroSection herosection={herosection} />
+      <HeroSection herosection={siteOptions?.home_hero_section} />
       {loading ? (
         <div className="container text-center py-5">
           <div className="loading">Loading...</div>
@@ -109,7 +103,7 @@ const Home = () => {
           <div className="position-relative text-center">
             <img src="/video-img.jpg.png" alt="video image" className="img-fluid" />
             <img
-              src="/play.png"
+              src="/play-green.png"
               className="position-absolute top-50 start-50 translate-middle"
               style={{ cursor: 'pointer' }}
               alt="Play video"
@@ -128,10 +122,15 @@ const Home = () => {
                 <button type="button" className="btn-close" onClick={handleClose}></button>
               </div>
               <div className="modal-body">
-                <div className="ratio ratio-16x9">
-                  <iframe width="560" height="315" src="https://www.youtube.com/embed/wyx2AhRFoZA?si=9Ia9uY5adsLf_QnE&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                  {siteOptions?.home_video_url ? (
+                    <div className='className="ratio ratio-16x9"' dangerouslySetInnerHTML={{ __html: siteOptions.home_video_url }} />
+                  ) : (
+                    <div className="d-flex align-items-center justify-content-center h-100">
+                      <p className="text-muted">No video found</p>
+                    </div>
+                  )}
                 </div>
-              </div>
+              
             </div>
           </div>
         </div>
