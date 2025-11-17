@@ -42,8 +42,9 @@ const Home = () => {
     if (tabsData) {
       // Map WordPress data to match the required structure
       const mappedTabs = tabsData.map((tab, index) => ({
+        
         title: tab.title,
-        subtitle: 'Activities for well-being of health professionals',
+        subtitle: tab.excerpt ? tab.excerpt.replace(/<[^>]+>/g, '') : '',
         link: index === 0 ? '/me' : index === 1 ? '/you' : '/us',
         content: (
           <div className="row align-items-center">
@@ -95,7 +96,7 @@ const Home = () => {
       <section className="bg-light py-5 video-banner-section">
         <div className="container">
           <h4 className="text-center mb-3">
-            Welcome to proven methods for <span className="text-primary">well-being and satisfaction</span>
+            Welcome to proven methods for <span className="text-primary">wellbeing and satisfaction</span>
           </h4>
           <h1 className="text-center mb-4">
             Tracing the footsteps of our history: <span className="text-primary">A deeper look</span>
