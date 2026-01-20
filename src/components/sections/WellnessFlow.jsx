@@ -47,6 +47,7 @@ const WellnessFlow = ({
   const [pdfUrl, setPdfUrl] = useState('');
   const [feelingOptions, setFeelingOptions] = useState([]);
   const [activityOptions, setActivityOptions] = useState([]);
+  const [filteredActivityOptions, setFilteredActivityOptions] = useState([]);
   const [activityDescriptions, setActivityDescriptions] = useState({});
   const [loading, setLoading] = useState(true);
   const [userEmail, setUserEmail] = useState('');
@@ -59,7 +60,7 @@ const WellnessFlow = ({
   const navigate = useNavigate();
 
 
-
+  
 
   useEffect(() => {
 
@@ -73,11 +74,33 @@ const WellnessFlow = ({
         const feelingsRes = await axios.get(`/wp/v2/${feelingPostType}`, {
           params: { per_page: 100, categories: feelingCategoryId }
         });
-        const formattedFeelings = feelingsRes.data.map(post => ({
-          value: post.slug,
-          label: post.title.rendered,
-          description: post.content.rendered
-        }));
+        const formattedFeelings = feelingsRes.data.map(post => {
+          // Extract related activities if they exist in ACF data
+          let relatedActivities = [];
+          if (post.acf?.related_activities) {
+            if (Array.isArray(post.acf.related_activities)) {
+              relatedActivities = post.acf.related_activities.map(item => {
+                if (typeof item === 'object' && item !== null) {
+                  // Handle complex ACF relationship objects that have ID property
+                  return item.ID || item.id || item.slug || item.post_name || item.toString();
+                }
+                return item;
+              });
+            } else if (typeof post.acf.related_activities === 'object' && post.acf.related_activities !== null) {
+              relatedActivities = [post.acf.related_activities.ID || post.acf.related_activities.id || post.acf.related_activities.slug || post.acf.related_activities.post_name || post.acf.related_activities.toString()];
+            } else if (typeof post.acf.related_activities === 'string' || typeof post.acf.related_activities === 'number') {
+              relatedActivities = [post.acf.related_activities];
+            }
+          }
+
+          return {
+            id: post.id, // Add ID for matching with relationship fields
+            value: post.slug,
+            label: post.title.rendered,
+            description: post.content.rendered,
+            relatedActivities: relatedActivities // Store related activities for reverse lookup
+          };
+        });
         setFeelingOptions(formattedFeelings);
 
         const activitiesRes = await axios.get(`/wp/v2/${activityPostType}`, {
@@ -87,13 +110,45 @@ const WellnessFlow = ({
         // Debug log to see the structure
         //console.log('Activity with PDF:', activitiesRes.data.find(post => post.acf?.attached_pdf));
 
-        const formattedActivities = activitiesRes.data.map(post => ({
-          name: post.title.rendered,
-          description: post.content.rendered,
-          pdfUrl: post.acf?.attached_pdf?.url || ''
-        }));
+        // Map activities with potential feeling relationships (from ACF field)
+        const formattedActivities = activitiesRes.data.map(post => {
+          // Debug: Log the post.acf to see what fields are available
+          console.log('Activity ACF data:', post.acf);
+          
+          // Check for different possible field names for the relationship
+          let relationshipField = post.acf?.related_feelings || post.acf?.relationship || [];
+          
+          // Handle different possible structures for relationship fields
+          // Could be array of IDs, array of objects, array of slugs, or single value
+          let processedRelationships = [];
+          
+          if (Array.isArray(relationshipField)) {
+            processedRelationships = relationshipField.map(item => {
+              // If item is an object with an 'id' or 'slug' property, extract the value
+              if (typeof item === 'object' && item !== null) {
+                // Handle complex ACF relationship objects that have ID property
+                return item.ID || item.id || item.slug || item.post_name || item.toString();
+              }
+              return item;
+            });
+          } else if (typeof relationshipField === 'object' && relationshipField !== null) {
+            // If it's a single object
+            processedRelationships = [relationshipField.ID || relationshipField.id || relationshipField.slug || relationshipField.post_name || relationshipField.toString()];
+          } else if (typeof relationshipField === 'string' || typeof relationshipField === 'number') {
+            // If it's a single value
+            processedRelationships = [relationshipField];
+          }
+          
+          return {
+            id: post.id, // Add activity ID for reverse relationship matching
+            name: post.title.rendered,
+            description: post.content.rendered,
+            pdfUrl: post.acf?.attached_pdf?.url || '',
+            relatedFeelings: processedRelationships
+          };
+        });
 
-        setActivityOptions(formattedActivities.map(a => a.name));
+        setActivityOptions(formattedActivities);
         setActivityDescriptions(Object.fromEntries(
           formattedActivities.map(a => [a.name, a.description])
         ));
@@ -105,6 +160,9 @@ const WellnessFlow = ({
 
         //console.log('PDF URLs Map:', pdfUrlsMap);
         setActivityPdfUrls(pdfUrlsMap);
+
+        // Initialize filtered activities when activityOptions are loaded
+        setFilteredActivityOptions(formattedActivities.map(a => a.name));
 
         setLoading(false);
       } catch (error) {
@@ -120,6 +178,129 @@ const WellnessFlow = ({
     return feelingData ? feelingData.description : "We've selected activities that will help you improve your overall well-being and find balance in your life.";
   };
 
+
+  
+
+  // Get activities related to a specific feeling
+  const getActivitiesForFeeling = (feelingValue) => {
+    // Find the feeling object to get both slug and ID
+    const selectedFeelingObj = feelingOptions.find(f => f.value === feelingValue);
+    if (!selectedFeelingObj) return [];
+    
+    const feelingId = selectedFeelingObj.id;
+    
+    // Filter activities that have the selected feeling in their relatedFeelings array
+    const relatedActivities = activityOptions.filter(activity => {
+      return activity.relatedFeelings.includes(feelingValue) || 
+             activity.relatedFeelings.includes(feelingValue.toLowerCase()) ||
+             activity.relatedFeelings.includes(feelingId.toString()) ||
+             activity.relatedFeelings.includes(parseInt(feelingId)) ||
+             activity.relatedFeelings.some(related => 
+               typeof related === 'object' && related !== null && 
+               (related.slug === feelingValue || 
+                related.value === feelingValue ||
+                related.id == feelingId ||
+                related.ID == feelingId ||
+                related.post_name === feelingValue)
+             );
+    });
+    
+    return relatedActivities.map(a => ({
+      name: a.name,
+      description: a.description,
+      pdfUrl: a.pdfUrl
+    }));
+  };
+
+  // Create a reverse mapping of all feelings to their activities
+  const getAllActivitiesByFeelings = () => {
+    const activitiesByFeeling = {};
+    
+    feelingOptions.forEach(feeling => {
+      activitiesByFeeling[feeling.value] = getActivitiesForFeeling(feeling.value);
+    });
+    
+    return activitiesByFeeling;
+  };
+
+  // Filter activities based on selected feeling
+  const filterActivitiesByFeeling = (feelingValue) => {
+    console.log('Filtering activities for feeling:', feelingValue);
+    console.log('All activity options:', activityOptions);
+    
+    // Find the feeling object to get both slug and ID
+    const selectedFeelingObj = feelingOptions.find(f => f.value === feelingValue);
+    const feelingId = selectedFeelingObj ? selectedFeelingObj.id : null;
+    
+    if (!feelingValue) {
+      // If no feeling is selected, return all activities
+      const allActivities = activityOptions.map(a => a.name);
+      console.log('No feeling selected, returning all activities:', allActivities);
+      return allActivities;
+    }
+    
+    // Check if the feeling has related activities defined (reverse relationship)
+    if (selectedFeelingObj && selectedFeelingObj.relatedActivities && selectedFeelingObj.relatedActivities.length > 0) {
+      // Filter activities based on the feeling's related activities
+      const filteredByFeeling = activityOptions.filter(activity => {
+        return selectedFeelingObj.relatedActivities.includes(activity.id.toString()) ||
+               selectedFeelingObj.relatedActivities.includes(parseInt(activity.id)) ||
+               selectedFeelingObj.relatedActivities.includes(activity.name.toLowerCase()) ||
+               selectedFeelingObj.relatedActivities.some(rel => 
+                 typeof rel === 'object' && rel !== null && 
+                 (rel.ID == activity.id || rel.id == activity.id || rel.post_name === activity.name.toLowerCase())
+               );
+      });
+      
+      const result = filteredByFeeling.map(a => a.name);
+      console.log('Filtered activities by feeling\'s related activities:', result);
+      return result;
+    }
+    
+    // Otherwise, use the original filtering logic (activities that have the feeling in their relationship)
+    const filtered = activityOptions.filter(activity => {
+      console.log('Checking activity:', activity.name, 'with relatedFeelings:', activity.relatedFeelings);
+      
+      // If no related feelings are specified, hide from specific feelings (require explicit relationship)
+      if (!activity.relatedFeelings || activity.relatedFeelings.length === 0) {
+        console.log('No related feelings for', activity.name, ', hiding from specific feeling selection');
+        return false;
+      }
+      
+      // Check if the selected feeling is in the related feelings array (checking both slug and ID)
+      const isMatch = activity.relatedFeelings.includes(feelingValue) || 
+                     activity.relatedFeelings.includes(feelingValue.toLowerCase()) ||
+                     (feelingId && activity.relatedFeelings.includes(feelingId.toString())) ||
+                     (feelingId && activity.relatedFeelings.includes(parseInt(feelingId))) ||
+                     activity.relatedFeelings.some(related => 
+                       // Handle various object structures that might be returned by ACF
+                       (typeof related === 'object' && related !== null && 
+                        (related.slug === feelingValue || 
+                         related.value === feelingValue ||
+                         related.id == feelingId ||
+                         related.ID == feelingId ||
+                         related.post_name === feelingValue))
+                     );
+                     
+      console.log('Activity', activity.name, 'match result:', isMatch);
+      return isMatch;
+    });
+    
+    const result = filtered.map(a => a.name);
+    console.log('Filtered activities result:', result);
+    return result;
+  };
+
+  // Update filtered activities when selected feeling changes
+  useEffect(() => {
+    if (selectedFeeling) {
+      const filtered = filterActivitiesByFeeling(selectedFeeling);
+      setFilteredActivityOptions(filtered);
+    } else {
+      // If no feeling selected, show all activities
+      setFilteredActivityOptions(activityOptions.map(a => a.name));
+    }
+  }, [selectedFeeling, activityOptions]);
 
 
   const handleNext = (values, { setTouched }) => {
@@ -149,7 +330,7 @@ const WellnessFlow = ({
   };
 
 
-
+  
   const handleBack = () => {
     setActiveStep(prev => prev - 1);
   };
@@ -253,7 +434,10 @@ const WellnessFlow = ({
       case 0:
         return (
           <FormControl component="fieldset" className="me-form-control">
-            <RadioGroup name="feeling" value={values.feeling} onChange={e => setFieldValue('feeling', e.target.value)} className="me-radio-group" row={false}>
+            <RadioGroup name="feeling" value={values.feeling} onChange={(e) => {
+              setFieldValue('feeling', e.target.value);
+              setSelectedFeeling(e.target.value);
+            }} className="me-radio-group" row={false}>
               <div>
                 {feelingOptions.map(option => (
                   <FormControlLabel key={option.value} value={option.value} control={<Radio className="me-radio" />} label={option.label} className="me-form-label" />
@@ -268,7 +452,7 @@ const WellnessFlow = ({
           <FormControl component="fieldset" className="me-form-control">
             <RadioGroup name="activity" value={values.activity} onChange={e => setFieldValue('activity', e.target.value)} className="me-radio-group" row={false}>
               <div>
-                {activityOptions.map(activity => (
+                {filteredActivityOptions.map(activity => (
                   <FormControlLabel key={activity} value={activity} control={<Radio className="me-radio" />} label={activity} className="me-form-label" />
                 ))}
               </div>

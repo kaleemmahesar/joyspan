@@ -43,7 +43,7 @@ export const apiSlice = createApi({
         try {
           const response = await axios.get('https://microdoseplus.com/wp/wp-json/wp/v2/posts', {
             params: {
-              categories: 8,
+              categories: 37,
               per_page: 100,
               _embed: true,
               // Add timestamp to force fresh data on page load
