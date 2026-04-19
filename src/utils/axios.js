@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://microdoseplus.com/wp/wp-json',
+  baseURL: 'http://localhost/microdose-april-26/wp-json',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

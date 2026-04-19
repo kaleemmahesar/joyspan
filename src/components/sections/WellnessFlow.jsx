@@ -392,7 +392,7 @@ const WellnessFlow = ({
       formData.append('user_email', userEmail);
 
       try {
-        await axios.post('https://microdoseplus.com/wp/upload_pdf.php', formData);
+        await axios.post('http://localhost/microdose-april-26/upload_pdf.php', formData);
         alert('PDF has been sent to your email!');
       } catch (error) {
         console.warn('Email sending failed:', error);
