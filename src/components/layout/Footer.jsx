@@ -36,6 +36,7 @@ const Footer = () => {
               <img src="/microdosplus-logo.svg" alt="Microdoseplus" className="h-40" />
             </Link>
           </div>
+<<<<<<< HEAD
           <div className="col-md-6">
             <nav className="d-flex justify-content-center">
               {isLoading ? (
@@ -57,21 +58,8 @@ const Footer = () => {
                 )}
             </nav>
           </div>
-          <div className="col-md-3">
-            <div className="d-flex justify-content-center justify-content-md-end gap-3">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
-                <RiFacebookCircleFill color='#047051' />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
-                <RiInstagramFill color='#047051' />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-dark fs-4">
-                <RiLinkedinBoxFill color='#047051' />
-              </a>
-            </div>
-          </div>
         </div>
-        <div class="text-center border-top pt-3"><p class="mb-0">© 2025 MicrodosePlus. All rights reserved.</p></div>
+        <div className="text-center border-top pt-3"><p className="mb-0">© {new Date().getFullYear()} MicrodosePlus. All rights reserved.</p></div>
       </div>
     </footer>
   );
