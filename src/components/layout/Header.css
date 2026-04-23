@@ -291,3 +291,20 @@
     font-size: 14px;
   }
 }
+
+.row-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.pages-wrapper .about-us .card{
+ height: 100%;
+ margin-bottom: 1rem;
+}
+.pages-wrapper .about-us .card .card-text{
+  margin-bottom: 0;
+}
+@media (max-width: 767px) {
+  .pages-wrapper .about-us .card{
+     height: auto;
+  }
+}

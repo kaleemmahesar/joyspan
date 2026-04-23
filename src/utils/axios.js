@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost/microdose-april-26/wp-json',
+  baseURL: 'http://localhost/thrivemedplus-wp-server/wp-json',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
