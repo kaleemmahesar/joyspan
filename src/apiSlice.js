@@ -41,7 +41,7 @@ export const apiSlice = createApi({
     getTabsData: builder.query({
       queryFn: async () => {
         try {
-          const response = await axios.get('http://localhost/thrivemedplus-wp-server/wp-json/wp/v2/posts', {
+          const response = await axios.get('https://thrivemedplus.com/wp-json/wp/v2/posts', {
             params: {
               categories: 37,
               per_page: 100,
@@ -74,7 +74,7 @@ export const apiSlice = createApi({
     getMenuItemsHeader: builder.query({
       queryFn: async () => {
         try {
-          const response = await axios.get('http://localhost/thrivemedplus-wp-server/wp-json/wp-api-menus/v2/menus/6', {
+          const response = await axios.get('https://thrivemedplus.com/wp-json/wp-api-menus/v2/menus/6', {
             params: {
               // Add timestamp to force fresh data on page load
               _t: Date.now()
@@ -94,7 +94,7 @@ export const apiSlice = createApi({
     getMenuItemsFooter: builder.query({
       queryFn: async () => {
         try {
-          const response = await axios.get('http://localhost/thrivemedplus-wp-server/wp-json/wp-api-menus/v2/menus/14', {
+          const response = await axios.get('https://thrivemedplus.com/wp-json/wp-api-menus/v2/menus/14', {
             params: {
               // Add timestamp to force fresh data on page load
               _t: Date.now()
@@ -138,7 +138,7 @@ export const apiSlice = createApi({
     getPageBySlug: builder.query({
       queryFn: async (slug) => {
         try {
-          const res = await axios.get(`http://localhost/thrivemedplus-wp-server/wp-json/wp/v2/pages`, {
+          const res = await axios.get(`https://thrivemedplus.com/wp-json/wp/v2/pages`, {
             params: {
               slug: slug,
               // Add timestamp to force fresh data on page load

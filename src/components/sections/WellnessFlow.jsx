@@ -392,7 +392,7 @@ const WellnessFlow = ({
       formData.append('user_email', userEmail);
 
       try {
-        await axios.post('http://localhost/thrivemedplus-wp-server/upload_pdf.php', formData);
+        await axios.post('https://thrivemedplus.com/wp/upload_pdf.php', formData);
         alert('PDF has been sent to your email!');
       } catch (error) {
         console.warn('Email sending failed:', error);

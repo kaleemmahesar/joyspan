@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
           
           try {
             // Verify the token is still valid
-            const response = await axios.get('http://localhost/thrivemedplus-wp-server/wp-json/wp/v2/users/me');
+            const response = await axios.get('https://thrivemedplus.com/wp-json/wp/v2/users/me');
             //console.log('Auth check response:', response.data);
             
             if (response.data) {
