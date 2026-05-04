@@ -157,15 +157,42 @@
   padding: 0;
   box-shadow: none;
   background: transparent;
-  min-width: 470px;
   max-width: 470px;
 }
 .MuiBox-root .login-paper.login-paper-signup {
-  min-width: 980px;
   max-width: 980px;
   margin: 0 auto;
   padding: 100px 0;
 }
+@media (max-width: 1200px) {
+  .MuiBox-root .login-paper.login-paper-signup{
+    max-width: 980px;
+    padding: 50px 2rem;
+  }
+}
+@media (max-width: 1024px) {
+  .MuiBox-root .login-paper.login-paper-signup{
+    max-width: 780px;
+    padding: 50px 2rem;
+  }
+}
+@media (max-width: 767px) {
+  .MuiBox-root .login-paper.login-paper-signup {
+    max-width: 100%;
+    padding: 50px 2rem;
+  }
+}
+@media (max-width: 767px) {
+.MuiBox-root .login-paper.login-paper-signup .form-row{
+  flex-direction: column;
+}
+}
+@media (max-width: 576px) {
+.MuiBox-root .login-paper.login-paper-signup .form-row{
+      gap: 15px;
+}
+}
+
 .login-form .login-button {
   background: var(--color-text);
   color: #fff;
@@ -225,6 +252,11 @@
 .form-buttons button {
   width: 100%;
   max-width: 350px;
+}
+.form-buttons button {
+  @media (max-width: 767px) {
+    max-width: 100%;
+  }
 }
 .MuiMenu-list {
   background-color: #fff;

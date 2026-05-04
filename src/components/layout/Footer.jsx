@@ -32,9 +32,9 @@ const Footer = () => {
     <footer className="py-5 mt-auto">
       <div className="container">
         <div className="row align-items-center mb-4">
-          <div className="col-md-3 text-center text-md-start">
+          <div className="col-md-3 text-center text-md-start footer-logo">
             <Link to="/">
-              <img src="/thrivemedplus-logo.svg" alt="Thrivemedplus" className="h-40" />
+              <img src="/thrivemedplus-logo.png" alt="Thrivemedplus" className="h-40" />
             </Link>
           </div>
           <div className="col-md-6">

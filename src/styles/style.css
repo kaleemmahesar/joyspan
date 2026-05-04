@@ -425,3 +425,10 @@ section {
   }
   
 }
+.footer-logo{
+@media (max-width: 768px) {
+      max-width: 300px;
+      margin: auto;
+      margin-bottom: 1rem;
+}
+}
